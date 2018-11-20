@@ -9,7 +9,7 @@ author: 'Julien Corioland'
 identifier: '6ca18723-13ed-4ab0-ae8b-ed9593e43ee6'
 ---
 
-Azure Kubernetes Services support Kubernetes RBAC with Azure Active Directory integration, that allows to bind ClusterRole and Role to subjects like Azure Active Directory users and groups.
+Azure Kubernetes Services supports Kubernetes RBAC with Azure Active Directory integration, that allows to bind ClusterRole and Role to subjects like Azure Active Directory users and groups.
 
 The [version 1.19.0 of the AzureRM Terraform](https://github.com/terraform-providers/terraform-provider-azurerm/releases/tag/v1.19.0) provider supports this integration.
 
