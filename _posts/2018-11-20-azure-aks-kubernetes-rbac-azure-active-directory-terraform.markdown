@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Secure an Azure Kubernetes cluster with Azure Active Directory and RBAC"
-date:   2018-11-21 10:00:00 +0200
+date:   2018-11-20 17:41:00 +0200
 categories: 
 - Microsoft Azure
 - Kubernetes
@@ -11,9 +11,9 @@ identifier: '6ca18723-13ed-4ab0-ae8b-ed9593e43ee6'
 
 Azure Kubernetes Services support Kubernetes RBAC with Azure Active Directory integration, that allows to bind ClusterRole and Role to subjects like Azure Active Directory users and groups.
 
-The [version 1.19 of the AzureRM Terraform](https://github.com/terraform-providers/terraform-provider-azurerm/releases/tag/v1.19.0) provider supports this integration.
+The [version 1.19.0 of the AzureRM Terraform](https://github.com/terraform-providers/terraform-provider-azurerm/releases/tag/v1.19.0) provider supports this integration.
 
-This blog post describe how to script the deployment of an AKS cluster, using RBAC + Azure AD with Terraform and Azure CLI.
+This blog post describes how to script the deployment of an AKS cluster, using RBAC + Azure AD with Terraform and Azure CLI.
 
 All the scripts are in this [GitHub repository](https://github.com/jcorioland/aks-rbac-azure-ad).
 
