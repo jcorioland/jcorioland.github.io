@@ -106,7 +106,7 @@ terraform apply "out.plan"
 Wait for the deployment to be completed.
 Once done, go in the Azure portal, open the subnet where you've deployed the AKS cluster and check that the AKS NSG and Route Table have been assigned to it:
 
-![Subnet with Route Table and NSG](assets/subnet.png)
+![Subnet with Route Table and NSG](/images/tf-aks-kubenet/subnet.png)
 
 ## How to destroy
 
