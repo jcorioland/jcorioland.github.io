@@ -9,6 +9,8 @@ author: 'Julien Corioland'
 identifier: '30c7ccf5-38c9-45ad-8218-523ca6c8ad20'
 ---
 
+*05/21/2019 UPDATE: the route table and NSG assignation are now directly managed by the Azure Kubernetes Service provider, you don't need to run extra script anymore! This blog post has been updated according to this and this kind of deployment is now documented on Microsoft Azure docs, on [this page](https://docs.microsoft.com/en-us/azure/aks/configure-kubenet).*
+
 You probably already know that it is possible to deploy an Azure Kubernetes Service cluster into an existing virtual network (VNET) to be able to control the network CIDR and consume other services on your private networks, like on-premises services through an [Express Route](https://azure.microsoft.com/en-us/services/expressroute/) for example.
 
 If you read the [network documentation of AKS](https://docs.microsoft.com/en-us/azure/aks/networking-overview) you will see that there are two networking modes: **Basic networking** that controls the virtual network and uses [Kubenet](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/network-plugins/#kubenet) as network plugin or **Advanced networking** that lets you control the virtual network and uses [Azure CNI](https://github.com/Azure/azure-container-networking/blob/master/docs/cni.md) network plugin.

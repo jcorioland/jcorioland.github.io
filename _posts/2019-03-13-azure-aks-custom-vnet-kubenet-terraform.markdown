@@ -9,6 +9,8 @@ author: 'Julien Corioland'
 identifier: 'e0d872cc-67ba-4289-8f2b-968692bee4cb'
 ---
 
+*05/21/2019 UPDATE: the route table and NSG assignation are now directly managed by the Azure Kubernetes Service provider, you don't need to run extra script anymore! This blog post has been updated according to this.*
+
 Few months ago, I have written [this post](https://blog.jcorioland.io/archives/2018/09/19/azure-aks-custom-vnet-kubenet.html) that explains how to deploy an Azure Kubernetes Service cluster inside a custom virtual network with the Kubenet plugin, instead of AzureCNI.
 
 *Note: The AKS docs has also been updated with this scenario, [here](https://docs.microsoft.com/en-us/azure/aks/configure-kubenet).*
@@ -31,40 +33,6 @@ It automatically creates:
 ## How it works
 
 All the AKS cluster definition is in the `tf/aks.tf` file. Some of the parameters are variable that can be overriden in the `tf/variables.tf` file.
-
-When deploying Azure Kubernetes Service with Kubenet plugin inside a custom virtual network, there are additional steps required to attach the Network Security Group and Route Table to the subnet where the node are deployed.
-
-This has been automated with the `tf/config-network.sh` script that is called by a Terraform provisionner after the AKS cluster has been created:
-
-```hcl
-provisioner "local-exec" {
-    command = "./config-network.sh"
-
-    environment {
-        AKS_RG = "${var.resource_group_name}"
-        AKS_VNET_RG = "${var.resource_group_name}"
-        AKS_VNET_NAME = "${azurerm_virtual_network.vnet.name}"
-        AKS_SUBNET_NAME = "${azurerm_subnet.subnet.name}"
-    }
-}
-```
-
-*NB: if you want to know more about those additional steps, read [this page](https://docs.microsoft.com/en-us/azure/aks/configure-kubenet) of the AKS docs.*
-
-For the same reason, there are custom actions required when you want to remove the AKS cluster. You need to detach the NSG and Route Table before. This has also been implemented in this repository, using a destroy provisionner that will execute the `tf/clean-network.sh` script before removing the AKS resource:
-
-```hcl
-provisioner "local-exec" {
-    when = "destroy"
-    command = "./clean-network.sh"
-
-    environment {
-        AKS_VNET_RG = "${var.resource_group_name}"
-        AKS_VNET_NAME = "${azurerm_virtual_network.vnet.name}"
-        AKS_SUBNET_NAME = "${azurerm_subnet.subnet.name}"
-    }
-}
-```
 
 ## How to deploy
 
@@ -104,9 +72,6 @@ terraform apply "out.plan"
 ```
 
 Wait for the deployment to be completed.
-Once done, go in the Azure portal, open the subnet where you've deployed the AKS cluster and check that the AKS NSG and Route Table have been assigned to it:
-
-![Subnet with Route Table and NSG](/images/tf-aks-kubenet/subnet.png)
 
 ## How to destroy
 
