@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Using Terraform on Microsoft Azure - Part 1: Introduction"
-date:   2019-09-03 10:00:00 +0200
+date:   2019-09-04 10:00:00 +0200
 categories: 
 - Microsoft Azure
 - DevOps
