@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Using Terraform on Microsoft Azure - Part 1: Introduction"
+title:  "Terraform on Microsoft Azure - Part 1: Introduction"
 date:   2019-09-04 10:00:00 +0200
 categories: 
 - Microsoft Azure
