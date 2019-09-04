@@ -61,7 +61,7 @@ To answer all those questions, this blog post series will be composed of the fol
 
 - Terraform on Microsoft Azure - Part 1: Introduction (this article)
 - [Terraform on Microsoft Azure - Part 2: Basics](/archives/2019/09/04/terraform-microsoft-azure-basics.html)
-- Terraform on Microsoft Azure - Part 3: Terraform state management
+- [Terraform on Microsoft Azure - Part 3: Terraform Remote State Management](/archives/2019/09/09/terraform-microsoft-azure-remote-state-management.html)
 - Terraform on Microsoft Azure - Part 4: Writing Terraform modules
 - Terraform on Microsoft Azure - Part 5: How to test your Terraform deployments?
 - Terraform on Microsoft Azure - Part 6: Continuous integration using Azure Pipeline
