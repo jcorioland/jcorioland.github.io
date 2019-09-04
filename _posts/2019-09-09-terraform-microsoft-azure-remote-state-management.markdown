@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Terraform on Microsoft Azure - Part 3: Remote State Management"
-date:   2019-09-09 10:20:00 +0200
+date:   2019-09-09 10:00:00 +0200
 categories: 
 - Microsoft Azure
 - DevOps
@@ -212,7 +212,7 @@ In the output, you can see that the first step is to acquire a lock on the state
 
 Once the state is locked, the deployment can be done, and all the new state information will be updated into the Azure blob:
 
-![Terraform State in Azure Blob](/images/terraform-microsoft-azure-remote-state-management/tfstate-blob.png)
+![Terraform State in Azure Blob](/images/terraform-microsoft-azure-remote-state-management/tfstate-remote-blob.png)
 
 ## Conclusion
 
