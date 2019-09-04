@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Terraform on Microsoft Azure - Part 1: Introduction"
-date:   2019-09-04 10:00:00 +0200
+date:   2019-09-04 10:20:00 +0200
 categories: 
 - Microsoft Azure
 - DevOps
@@ -10,7 +10,7 @@ author: 'Julien Corioland'
 identifier: '1465446e-1175-4bab-b4f1-c02eb42c59a2'
 ---
 
-Recently, I have been involved in several projects to help customers to improve the way they are dealing with their infrastructure deployment. Cloud platforms like Microsoft Azure enable a high level of automation of these deployments and there are several options and tools available to you to make sure that you are able to deploy the different components of your infrastructure in an automated, repeatable and idempotent way.
+Recently, I have been involved in several projects to help customers to improve the way they are dealing with their infrastructure deployments. Cloud platforms like Microsoft Azure enable a high level of automation of these deployments and there are several options and tools available to you to make sure that you are able to deploy the different components of your infrastructure in an automated, repeatable and idempotent way.
 
 In this blog post series I will detail some best practices about using Terraform and setting up continuous deployment and testing for Microsoft Azure infrastructure.
 
@@ -49,18 +49,18 @@ As you can see on the picture above, there are different kind of components that
 - platform services, like Azure Database for MySql, KeyVault, Container Registry...
 - common/transverse tools Azure Monitor and Log Analytics
 
-I've also chose to have components with different lifecycle, because they are duplicated environment that can be created and removed on demand (dev, QA, production...) or because they are common components that are used by other part of the infrastructure.
+I've also chose to have components with different lifecycles, because they are duplicated environment that can be created and removed on demand (dev, QA, production...) or because they are common components that are used by other part of the infrastructure.
 
 Those deliberated choices will help to discuss different topics like:
 - how to factorize infrastructure code by writing Terraform modules?
-- how to manage infrastructure deployment with components that have different lifecycle?
+- how to manage infrastructure deployment with components that have different lifecycles?
 - how you deploy only a part of your infrastructure, like a duplicated environment or a subset of an environment?
 - how you can rollback to a previous version of an application and its underlying infrastructure?
 
 To answer all those questions, this blog post series will be composed of the following articles:
 
 - Terraform on Microsoft Azure - Part 1: Introduction (this article)
-- Terraform on Microsoft Azure - Part 2: Basics
+- [Terraform on Microsoft Azure - Part 2: Basics](/archives/2019/09/04/terraform-microsoft-azure-basics.html)
 - Terraform on Microsoft Azure - Part 3: Terraform state management
 - Terraform on Microsoft Azure - Part 4: Writing Terraform modules
 - Terraform on Microsoft Azure - Part 5: How to test your Terraform deployments?
