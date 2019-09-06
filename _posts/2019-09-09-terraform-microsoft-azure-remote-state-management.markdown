@@ -27,17 +27,36 @@ By default, a state file is generated inside your Terraform project's directory 
 
 I am sure there are plenty of other reasons to not keep the state of any Terraform deployment on a single machine. This is the reason why Terraform offers the option to store this state remotely.
 
-Being able to save and share state information are not the only feature provided by Terraform Remote State. It also provides **resources locking**, which is **mandatory** when you start to have multiple people or processes (like automated pipelines) doing deployments on the same infrastructure.
+Being able to save and share state information are not the only features provided by Terraform Remote State. It also provides **resources locking**, which is **mandatory** when you start to have multiple people or processes (like automated pipelines) doing deployments on the same infrastructure.
 
-*Note: it's not **dramatic** to loose a state file, as it can be restored using the [terraform refresh](https://www.terraform.io/docs/commands/refresh.html) command. But it's a best practice to try to not loose it, as it will help to save a lot of time, especially with massive infrastructure deployments!*
+## Terraform State lost?
 
-There are two obvious options to implement remote state management when targeting Microsoft Azure: 
+Loosing the state can be really **dramatic** for your project, especially when you are dealing with massive infrastructure deployment. It's really import to implement remote state management as soon as you are starting to use Terraform! In case you've lost it (I am sorry for you!) you can try to restore it by using the `terraform import` command on each resources that is supposed to be part of your Terraform project. Again, for massive deployments, it can be really painful, so the best option is to try to avoid being in that situation ;-)
+
+For example, if you've lost the state from the [previous article](/archives/2019/09/04/terraform-microsoft-azure-basics.html) Terraform project, you can reimport the resource group name `rg` using its resource id in Azure, like the following:
+
+```bash
+julien@devbox-julien:/mnt/c/workspaces/hello-tf-azure$ terraform import azurerm_resource_group.rg /subscriptions/SUBSCRIPTION_ID/resourceGroups/hello-tf-azure-rg
+azurerm_resource_group.rg: Importing from ID "/subscriptions/SUBSCRIPTION_ID/resourceGroups/hello-tf-azure-rg"...
+azurerm_resource_group.rg: Import prepared!
+  Prepared azurerm_resource_group for import
+azurerm_resource_group.rg: Refreshing state... [id=/subscriptions/SUBSCRIPTION_ID/resourceGroups/hello-tf-azure-rg]
+
+Import successful!
+
+The resources that were imported are shown above. These resources are now in
+your Terraform state and will henceforth be managed by Terraform.
+```
+
+Find more about the `terraform import` command [here](https://www.terraform.io/docs/import/index.html). Let's go back to our remote state management, to make sure you'll never loose it :-)
+
+## Remote State Management on Azure
+
+There are two natural options to implement remote state management when targeting Microsoft Azure: 
 - you can use Terraform Cloud: I will not cover this topic, but your can find more information on [this blog post from HashiCorp](https://www.hashicorp.com/blog/using-terraform-cloud-remote-state-management).
 - you can use Azure Blob Storage, as detailled in the following.
 
 Like for providers, Terraform remote state management is based on a plugins architecture: for each project you are working on, you can choose what is the remote state backend (provider) that you want to use.
-
-## Using Azure Storage
 
 Before being able to configure Terraform to store state remotely into Azure Storage, you need to deploy the infrastructure that will be used. The following [script](https://github.com/jcorioland/terraform-azure-reference/blob/master/scripts/init-remote-state-backend.sh) does everything for you:
 
