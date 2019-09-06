@@ -45,7 +45,7 @@ This file is really basic:
 - the `provider` directive indicates that we want to use the version 1.33 of the `azurerm` provider, i.e. that we are going to use the Terraform Azure Resource Manager provider, one of the plugins available for Terraform that allows to deploy resources on Azure. It's always important to specify the version of the provider you want to use, to avoid implicit version upgrade between runs. You can find more details about how to specify the version on [this page](https://www.terraform.io/docs/configuration/providers.html#version-provider-versions). 
 - the `resource` directory indicates that we are going to create a new resource, of type `azurerm_resource_group` with two parameters `name` and `location`. This will make sure Terraform creates a resource group named `hello-tf-azure-rg` in the France Central Azure region.
 
-*Note: if you are a Visual Studio Code use, you can download the [Azure Terraform](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureterraform) and the [Terraform](https://marketplace.visualstudio.com/items?itemName=mauve.terraform) extensions. Those two extensions will help to work with Terraform and get syntax highlighting and intellisense!*
+*Note: if you are a Visual Studio Code user, you can download the [Azure Terraform](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureterraform) and the [Terraform](https://marketplace.visualstudio.com/items?itemName=mauve.terraform) extensions. Those two extensions will help to work with Terraform and get syntax highlighting and intellisense!*
 
 ![Visual Studio Code Terraform extensions](/images/terraform-microsoft-azure-basics/vscode-terraform-extensions.png)
 

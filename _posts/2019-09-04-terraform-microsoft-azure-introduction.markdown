@@ -49,7 +49,7 @@ As you can see on the picture above, there are different kind of components that
 - platform services, like Azure Database for MySql, KeyVault, Container Registry...
 - common/transverse tools Azure Monitor and Log Analytics
 
-I've also chose to have components with different lifecycles, because they are duplicated environment that can be created and removed on demand (dev, QA, production...) or because they are common components that are used by other part of the infrastructure.
+I've also chosen to have components with different lifecycles, because they are duplicated environment that can be created and removed on demand (dev, QA, production...) or because they are common components that are used by other part of the infrastructure.
 
 Those deliberated choices will help to discuss different topics like:
 - how to factorize infrastructure code by writing Terraform modules?
