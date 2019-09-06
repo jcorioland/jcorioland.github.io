@@ -288,7 +288,7 @@ module "aks" {
 }
 ```
 
-Once you've created your configuration that aggregates all the modules you want to import, just call the `terraform apply` command. It is simple as that!
+Once you've created your configuration that aggregates all the modules you want to import, just call the `terraform init` and `terraform apply` commands. Terraform will first download the modules from their various location and then apply the configuration, as it does with a simple project. It is simple as that!
 
 You can read more about Terraform modules on [this page of the Terraform documentation](https://www.terraform.io/docs/modules/index.html).
 
