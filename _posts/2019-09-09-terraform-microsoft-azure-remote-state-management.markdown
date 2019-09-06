@@ -183,7 +183,7 @@ Congrats! Your Terraform project is configured to use Azure Storage as remote st
 
 ## Test Azure Storage Remote State backend
 
-The last step is to validate that everything is working correctly. You do not have to do anything specific to work with Azure Storage remote state backend now that the project directory has been configured. Just use the `terraform apply` command as you are used to. Instead of creating a local state file, Terraform will use the `azurerm` backend provider to uploaded into the configured Azure Storage.
+The last step is to validate that everything is working correctly. You do not have to do anything specific to work with Azure Storage remote state backend now that the project directory has been configured. Just use the `terraform apply` command as you are used to. Instead of creating a local state file, Terraform will use the `azurerm` backend provider to upload the state into the configured Azure Storage.
 
 ```PowerShell
 PS C:\workspaces\junk\hello-tf-azure> terraform apply
@@ -227,7 +227,7 @@ azurerm_resource_group.rg2: Creation complete after 1s [id=/subscriptions/SUBSCR
 Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
 ```
 
-In the output, you can see that the first step is to acquire a lock on the state, to make sure that there is no other running apply operation. Technically using the `azurerm` backend provider, this is achieved by acquiring a lease on the blob.
+In the output, you can see that the first step is to acquire a lock on the state file, to make sure that there is no other running deployment in progress and avoid conflicts. Technically, when using the `azurerm` backend provider, this is achieved by acquiring a lease on the state blob.
 
 Once the state is locked, the deployment can be done, and all the new state information will be updated into the Azure blob:
 
@@ -235,6 +235,6 @@ Once the state is locked, the deployment can be done, and all the new state info
 
 ## Conclusion
 
-In this blob post I explained why remote state important is really important with Terraform and how you can set it up with Azure Storage. In the next blog post of this series, I will discuss about how you can organize and factorize the different parts of your infrastructure using Terraform modules.
+In this blob post I explained why remote state management is really important with Terraform and how you can set it up with Azure Storage. In the next blog post of this series, I will discuss about how you can organize and factorize the different parts of your infrastructure using Terraform modules.
 
 Stay tuned!
