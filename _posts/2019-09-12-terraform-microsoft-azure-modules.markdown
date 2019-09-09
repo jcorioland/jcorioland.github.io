@@ -20,9 +20,9 @@ Like developers, try to avoid copy/past portions of code from one file to anothe
 ## Terraform Project structure
 
 Before going deep dive into Terraform modules, let's discuss about the basic structure/organization of a Terraform project.
-You already know from [the second article of this blog posts series](https://blog.jcorioland.io/archives/2019/09/04/terraform-microsoft-azure-basics.html) that a Terraform project is a collection of `*.tf` files in a specific directory.
+You already know from [the second article of this blog posts series](https://blog.jcorioland.io/archives/2019/09/04/terraform-microsoft-azure-basics.html) that a Terraform project is, basically, a collection of `*.tf` files in a specific directory.
 
-Here is what IMHO must look like a minimal Terraform project directory:
+Here is what could look like a minimal Terraform project directory:
 
 ```
 /myproject
@@ -174,7 +174,7 @@ variable "location" {
 
 ## Resource definition VS Data Source
 
-There are two ways to reference an instance of a service running in Azure with Terraform. You can use a resource definition, with the `resource` keyword, like this is done in the snippets above or you can use a data source, with the `data` keyword:
+There are two ways to reference an instance of a service running in Azure when working with Terraform. You can use a resource definition, with the `resource` keyword, like this is done in the snippets above or you can use a data source, with the `data` keyword:
 
 ```hcl
 resource "azurerm_resource_group" "rg" {
@@ -201,13 +201,11 @@ resource_group_name = "${azurerm_resource_group.rg.name}"
 resource_group_name = "${data.azurerm_resource_group.rg.name}"
 ```
 
-Understanding the difference between those two types of object in really important to be able to write module and manage dependencies between all the modules that compose your solution!
+Understanding the difference between those two types of object is really important to be able to write module and manage dependencies between all the modules that compose your solution!
 
 ## Writing a Terraform module
 
-Now that you know about the basic structure of a Terraform configuration project and start to get familiar with the syntax, we can discuss about Terraform modules.
-
-And the good news is that a module is nothing more than a directory with a bunch of Terraform files, structured like a project. Cool, isn't it? :)
+Now that you know about the basic structure of a Terraform configuration project and start to get familiar with the syntax, we can discuss about Terraform modules. The good news is that a module is nothing more than a directory with a bunch of Terraform files, structured like a project. Cool, isn't it? :)
 
 Terraform modules are used to group together a set of resources that have the same lifecycle. It is not mandatory to use modules, but in some case it might be useful.
 
@@ -294,8 +292,10 @@ You can read more about Terraform modules on [this page of the Terraform documen
 
 ## Conclusion
 
-In this blob post I gave you some tips and tricks on how you can organize your Terraform projects and use modules to maximize code reuse in your projects.
+In this post I gave you some tips and tricks on how you can organize your Terraform projects and use modules to maximize code reuse in your projects.
 
 As explained, there ar a lot of options to achieve these goals and the choices done will be different depending on the project you are working on. That's being said, I hope you've enjoyed the read and that it gave you enough insights to start thinking about your own Terraform projects organization!
 
-In the next post of this series, I will discuss about testing Terraform modules... Stay tuned!
+In the next post of this series, I will discuss about testing Terraform modules...
+
+Stay tuned!
