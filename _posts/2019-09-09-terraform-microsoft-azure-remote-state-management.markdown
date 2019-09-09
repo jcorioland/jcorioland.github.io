@@ -10,11 +10,11 @@ author: 'Julien Corioland'
 identifier: '1465446e-1175-4bab-b4f1-c02eb42c59a3'
 ---
 
-This blog post is part of the series about using [Terraform on Microsoft Azure](/archives/2019/09/04/terraform-microsoft-azure-introduction.html). In this part, I will discuss about Terraform remote state management, i.e. how to save and share the Terraform state between machines, pipelines, team members etc.
+This blog post is part of the series about using [Terraform on Microsoft Azure](/archives/2019/09/04/terraform-microsoft-azure-introduction.html). In this part, I will discuss about Terraform remote state management, i.e. how to save, share and lock the Terraform state between machines, pipelines, team members etc.
 
 <!--more-->
 
-## Why do you need Terraform remote state ?
+## Why you must store Terraform state remotely
 
 As discussed in the [previous part of this series](/archives/2019/09/04/terraform-microsoft-azure-basics.html), Terraform needs to maintain state between the different deployments, essentially to improve the way it knows what actions need to be executed during a new deployment. 
 [Terraform state](https://www.terraform.io/docs/state/) allows to know what is actually deployed on your target platform and stores some configuration relative to your deployments. This state must be considered as sensitive data, as it may contain sensitive information like connection strings, passwords etc...
@@ -29,7 +29,7 @@ I am sure there are plenty of other reasons to not keep the state of any Terrafo
 
 Being able to save and share state information are not the only features provided by Terraform Remote State. It also provides **resources locking**, which is **mandatory** when you start to have multiple people or processes (like automated pipelines) doing deployments on the same infrastructure.
 
-## Terraform State lost?
+## Help! I have lost my Terraform state!
 
 Loosing the state can be really **dramatic** for your project, especially when you are dealing with massive infrastructure deployment. It's really import to implement remote state management as soon as you are starting to use Terraform! In case you've lost it (I am sorry for you!) you can try to restore it by using the `terraform import` command on each resources that is supposed to be part of your Terraform project. Again, for massive deployments, it can be really painful, so the best option is to try to avoid being in that situation ;-)
 
