@@ -143,7 +143,7 @@ It sets different keys for the backend configuration:
 
 Before executing the command, you need to update the Terraform configuration of your project to specify that you want to use the AzureRM backend (i.e. the Azure Storage account). You can do it by adding the following:
 
-```HCL
+```hcl
 terraform {
   backend "azurerm" {}
 }
@@ -151,7 +151,7 @@ terraform {
 
 Then you can execute the `terraform init` command line with all the backend configuration seen above.
 
-```PowerShell
+```powershell
 PS C:\workspaces\hello-tf-azure> terraform init -backend-config="storage_account_name=tfseries" `
 >>     -backend-config="container_name=tfstate" `   
 >>     -backend-config="access_key=$(az keyvault secret show --name tfstate-storage-key --vault-name tfseries-state-kv --query value -o tsv)" `   
@@ -185,7 +185,7 @@ Congrats! Your Terraform project is configured to use Azure Storage as remote st
 
 The last step is to validate that everything is working correctly. You do not have to do anything specific to work with Azure Storage remote state backend now that the project directory has been configured. Just use the `terraform apply` command as you are used to. Instead of creating a local state file, Terraform will use the `azurerm` backend provider to upload the state into the configured Azure Storage.
 
-```PowerShell
+```powershell
 PS C:\workspaces\junk\hello-tf-azure> terraform apply
 Acquiring state lock. This may take a few moments...
 
