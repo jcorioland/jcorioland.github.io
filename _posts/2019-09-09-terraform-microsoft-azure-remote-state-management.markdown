@@ -31,7 +31,7 @@ Being able to save and share state information are not the only features provide
 
 ## Help! I have lost my Terraform state!
 
-Loosing the state can be really **dramatic** for your project, especially when you are dealing with massive infrastructure deployment. It's really import to implement remote state management as soon as you are starting to use Terraform! In case you've lost it (I am sorry for you!) you can try to restore it by using the `terraform import` command on each resources that is supposed to be part of your Terraform project. Again, for massive deployments, it can be really painful, so the best option is to try to avoid being in that situation ;-)
+Loosing the state can be really **dramatic** for your project, especially when you are dealing with massive infrastructure deployment. It's really important to implement remote state management as soon as you are starting to use Terraform! In case you've lost it (I am sorry for you!) you can try to restore it by using the `terraform import` command on each resources that is supposed to be part of your Terraform project. Again, for massive deployments, it can be really painful, so the best option is to try to avoid being in that situation ;-)
 
 For example, if you've lost the state from the [previous article](/archives/2019/09/04/terraform-microsoft-azure-basics.html) Terraform project, you can reimport the resource group name `rg` using its resource id in Azure, like the following:
 
@@ -48,7 +48,7 @@ The resources that were imported are shown above. These resources are now in
 your Terraform state and will henceforth be managed by Terraform.
 ```
 
-Find more about the `terraform import` command [here](https://www.terraform.io/docs/import/index.html). Let's go back to our remote state management, to make sure you'll never loose it :-)
+Find more about the `terraform import` command [here](https://www.terraform.io/docs/import/index.html). Let's go back to our remote state management, to make sure you'll never lose it :-)
 
 ## Remote State Management on Azure
 
@@ -104,8 +104,8 @@ az keyvault create -g $COMMON_RESOURCE_GROUP_NAME -l $LOCATION --name $KEYVAULT_
 
 echo "Key vault $KEYVAULT_NAME created."
 
-# Storage the Terraform State Storage Key into KeyVault
-echo "Storage storage access key into key vault secret..."
+# Store the Terraform State Storage Key into KeyVault
+echo "Store storage access key into key vault secret..."
 az keyvault secret set --name tfstate-storage-key --value $ACCOUNT_KEY --vault-name $KEYVAULT_NAME
 
 echo "Key vault secret created."
