@@ -19,6 +19,10 @@ google_analytics: UA-124844581-1
 
 # Build settings
 markdown: kramdown
+highlighter: rouge
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
 theme: jekyll-theme-cayman 
 plugins:
   - jekyll-feed

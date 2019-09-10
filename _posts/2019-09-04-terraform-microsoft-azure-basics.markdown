@@ -20,7 +20,7 @@ Terraform is based on a plugins architecture. That means that you need to [downl
 
 You can validate your installation by executing the command `terraform --version`:
 
-```PowerShell
+```powershell
 PS C:\workspaces\hello-tf-azure> terraform --version
 Terraform v0.12.7
 ```
@@ -55,7 +55,7 @@ Your Terraform template is done! Let's see how to deploy it to Microsoft Azure.
 
 First, you need to initialize your project directory. This can be done by running the `terraform init` command into the directory.
 
-```PowerShell
+```powershell
 PS C:\workspaces\hello-tf-azure> terraform init
 
 Initializing the backend...
@@ -94,7 +94,7 @@ You need to deal with authentication first. When working with Terraform, you hav
 
 Ok, so you are logged in your Azure subscription. You can now deploy by using the `terraform apply` command:
 
-```PowerShell
+```powershell
 PS C:\workspaces\junk\hello-tf-azure> terraform apply
 
 An execution plan has been generated and is shown below.
@@ -129,7 +129,7 @@ Type `yes` on the prompt and `Enter`. The deployment is starting...
 
 The deployment must be completed now:
 
-```PowerShell
+```powershell
 azurerm_resource_group.rg: Creating...
 azurerm_resource_group.rg: Creation complete after 2s [id=/subscriptions/SUBSCRIPTION_ID/resourceGroups/hello-tf-azure-rg]
 
@@ -138,7 +138,7 @@ Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 
 If you look into your directory, a state file named `terraform.tfstate` has been generated. This file is important as it contains all the state information about what has been deployed to Azure:
 
-```XML
+```json
 {
   "version": 4,
   "terraform_version": "0.12.7",
@@ -171,7 +171,7 @@ If you look into your directory, a state file named `terraform.tfstate` has been
 
 If you do another `terraform apply` in your directory, you will see that the execution plan has no action to execute (everything is already deployed):
 
-```PowerShell
+```powershell
 PS C:\workspaces\hello-tf-azure> terraform apply
 azurerm_resource_group.rg: Refreshing state... [id=/subscriptions/SUBSCRIPTION_ID/resourceGroups/hello-tf-azure-rg]
 
@@ -184,7 +184,7 @@ It is also possible to execute the `terraform plan` command before the `terrafor
 
 Let's add another resource group definition into the Terraform template file:
 
-```HCL
+```hcl
 provider "azurerm" {
     version = "~>1.33"
 }
@@ -202,7 +202,7 @@ resource "azurerm_resource_group" "rg2" {
 
 And execute the `terraform plan -out out.plan` command like the following:
 
-```PowerShell
+```powershell
 PS C:\workspaces\junk\hello-tf-azure> terraform plan -out out.plan
 Refreshing Terraform state in-memory prior to plan...
 The refreshed state will be used to calculate this plan, but will not be
@@ -240,7 +240,7 @@ Terraform checks what is already existing and what actions need to be executed. 
 
 You can apply the plan by running the `terraform apply "out.plan"` command:
 
-```PowerShell
+```powershell
 PS C:\workspaces\hello-tf-azure> terraform apply "out.plan"
 azurerm_resource_group.rg2: Creating...
 azurerm_resource_group.rg2: Creation complete after 1s [id=/subscriptions/SUBSCRIPTION_ID/resourceGroups/hello-tf-azure-2-rg]
@@ -259,7 +259,7 @@ The second resource group has been created, and the local state file has been up
 
 You can visualize the state by using the `terraform show` command in your directory:
 
-```PowerShell
+```powershell
 PS C:\workspaces\hello-tf-azure> terraform show
 # azurerm_resource_group.rg:
 resource "azurerm_resource_group" "rg" {
@@ -282,7 +282,7 @@ resource "azurerm_resource_group" "rg2" {
 
 Finally, you can delete everything by using the `terraform destroy` command:
 
-```PowerShell
+```powershell
 PS C:\workspaces\junk\hello-tf-azure> terraform destroy
 azurerm_resource_group.rg2: Refreshing state... [id=/subscriptions/SUBSCRIPTION_ID/resourceGroups/hello-tf-azure-2-rg]
 azurerm_resource_group.rg: Refreshing state... [id=/subscriptions/SUBSCRIPTION_ID/resourceGroups/hello-tf-azure-rg]
@@ -320,7 +320,7 @@ Do you really want to destroy all resources?
 
 Like for the apply command, it will generate an execution plan that show you all the actions that are about to be executed. In that case, destroying the two resource groups. Type `yes` and `Enter` to validate the plan and wait for the destroy operation to be completed.
 
-```PowerShell
+```powershell
 azurerm_resource_group.rg: Destroying... [id=/subscriptions/SUBSCRIPTION_ID/resourceGroups/hello-tf-azure-rg]
 azurerm_resource_group.rg2: Destroying... [id=/subscriptions/SUBSCRIPTION_ID/resourceGroups/hello-tf-azure-2-rg]
 azurerm_resource_group.rg2: Still destroying... [id=/subscriptions/SUBSCRIPTION_ID/resourceGroups/hello-tf-azure-2-rg, 10s elapsed]
