@@ -14,6 +14,8 @@ This blog post is part of the series about using [Terraform on Microsoft Azure](
 
 <!--more-->
 
+*Note: this blog post series comes with a [reference implementation](https://github.com/jcorioland/terraform-azure-reference) hosted on my GitHub. Do not hesitate to check it out to go deeper into the details, fork it, contribute, open issues... :)*
+
 Infrastructure as Code is about following the same practices with infrastructure deployment templates than with application code. One of the golden rule is to try to mutualize the code whenever it is possible to do it. 
 Like developers, try to avoid copy/past portions of code from one file to another. It is not always an easy task, but there are some tools, like Terraform modules that will help you to achieve this goal.
 
@@ -172,7 +174,7 @@ variable "location" {
 - other `*.tf` files: contain the definition of the resources and data sources related to each other that you are using to deploy your infrastructure (for example `network.tf` and `virtual_machine.tf`...)
 - `README.md`: it's always useful to document what the Terraform project does. A readme file is perfect for that :)
 
-## Resource definition VS Data Source
+## Resource Definitions VS Data Sources
 
 There are two ways to reference an instance of a service running in Azure when working with Terraform. You can use a resource definition, with the `resource` keyword, like this is done in the snippets above or you can use a data source, with the `data` keyword:
 
@@ -314,9 +316,9 @@ You can read more about Terraform modules on [this page of the Terraform documen
 
 ## Conclusion
 
-In this post I gave you some tips and tricks on how you can organize your Terraform projects and use modules to maximize code reuse in your projects.
+In this post I gave you some tips and tricks on how you can organize your Terraform projects and use modules to maximize code reuse in your projects. Don't forget to check out [the reference implementation](https://github.com/jcorioland/terraform-azure-reference) I have created for this blog post series to go deeper into the details.
 
-As explained, there are a lot of options to achieve these goals and the choices done will be different depending on the project you are working on. That's being said, I hope you've enjoyed the read and that it gave you enough insights to start thinking about your own Terraform projects organization!
+As discussed above, there are a lot of options to achieve these goals and the choices done will be different depending on the project you are working on. That's being said, I hope you've enjoyed the read and that it gave you enough insights to start thinking about your own Terraform projects organization!
 
 In the next post of this series, I will discuss about testing Terraform modules...
 
