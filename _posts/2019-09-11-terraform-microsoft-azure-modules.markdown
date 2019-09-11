@@ -286,7 +286,7 @@ module "aks" {
 }
 ```
 
-If you are using multiple modules, it is totally possible to use outputs from one module as inputs from another one. By doing that, you can define in what order modules needs to be deployed by Terraform, because you create dependencies between the modules:
+If you are using multiple modules, it is totally possible to use outputs from one module as inputs from another one. By doing that, you can define in what order modules need to be deployed by Terraform, by creating a dependency between the modules:
 
 ```hcl
 module "core" {
