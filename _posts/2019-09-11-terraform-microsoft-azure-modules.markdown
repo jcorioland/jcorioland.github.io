@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Terraform on Microsoft Azure - Part 4: Terraform projects organization and modules"
-date:   2019-09-12 10:00:00 +0200
+date:   2019-09-11 14:00:00 +0200
 categories: 
 - Microsoft Azure
 - DevOps
@@ -286,6 +286,28 @@ module "aks" {
 }
 ```
 
+If you are using multiple modules, it is totally possible to use outputs from one module as inputs from another one. By doing that, you can define in what order modules needs to be deployed by Terraform, because you create dependencies between the modules:
+
+```hcl
+module "core" {
+  source      = "../core"
+  location    = "${var.location}"
+  environment = "${var.environment}"
+}
+
+module "aks" {
+  source                          = "git@github.com:jcorioland/terraform-azure-ref-aks-module"
+  environment                     = "${module.core.environment}"
+  location                        = "${module.core.location}"
+  kubernetes_version              = "${var.kubernetes_version}"
+  service_principal_client_id     = "${var.service_principal_client_id}"
+  service_principal_client_secret = "${var.service_principal_client_secret}"
+  ssh_public_key                  = "${var.ssh_public_key}"
+}
+```
+
+*Note: you may want to read more about output values on [this page](https://www.terraform.io/docs/configuration/outputs.html).*
+
 Once you've created your configuration that aggregates all the modules you want to import, just call the `terraform init` and `terraform apply` commands. Terraform will first download the modules from their various location and then apply the configuration, as it does with a simple project. It is simple as that!
 
 You can read more about Terraform modules on [this page of the Terraform documentation](https://www.terraform.io/docs/modules/index.html).
@@ -294,7 +316,7 @@ You can read more about Terraform modules on [this page of the Terraform documen
 
 In this post I gave you some tips and tricks on how you can organize your Terraform projects and use modules to maximize code reuse in your projects.
 
-As explained, there ar a lot of options to achieve these goals and the choices done will be different depending on the project you are working on. That's being said, I hope you've enjoyed the read and that it gave you enough insights to start thinking about your own Terraform projects organization!
+As explained, there are a lot of options to achieve these goals and the choices done will be different depending on the project you are working on. That's being said, I hope you've enjoyed the read and that it gave you enough insights to start thinking about your own Terraform projects organization!
 
 In the next post of this series, I will discuss about testing Terraform modules...
 
