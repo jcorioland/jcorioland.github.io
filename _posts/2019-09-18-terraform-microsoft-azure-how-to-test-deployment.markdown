@@ -47,3 +47,138 @@ checkAndValidateInfrastructureDeployment(t, terraformOptions)
 Basically in the snippet above, I've declared a variable that stores where the Terraform code I want to test is located. Then, I defer the call to `terraform destroy` to make sure it's called after all my code below is executed. The `terraform.InitAndApply` function call is responsible for initializing Terraform in the tested directory, downloading all the plugins / providers dependencies and do the `terraform apply` to deploy the infrastructure.
 
 Finally, the last function `checkAndValidateInfrastructureDeployment` is responsible for executing the test once the infrastructure is deployed and before it is destroyed. You can run any code in this function. It can for example use the [Azure Go SDK](https://github.com/Azure/azure-sdk-for-go) to make some queries to the Azure APIs, checking for services existance... Or it can use the Kubernetes SDK to try to connect an Azure Kubernetes cluster to make sure it is correctly deployed and has the right number of nodes etc... I will detail a bit more later in this post.
+
+## Getting started with Terratest
+
+To be able to run Terratest, you need to install some tools on your machine. It is based on the Go language test framework (you can run it using `go test`) so you need to have Go language installed on your machine. You can find all the requirements in the [Quickstart section](https://blog.jcorioland.io/archives/2019/09/04/terraform-microsoft-azure-introduction.html) of the Terratest GitHub repository.
+
+It's also possible to run Terratest into a Docker container, I will come back on this solution in the next post of this series as it is the way I have chosen to be able to execute continuous integration on Azure Pipeline :-)
+
+## Azure Authentication
+
+As explained previously, Terratest will actually use Terraform to deploy the infrastructure to Azure, before testing it. Because it uses Terraform directly, you have the exact same [authentication options](https://www.terraform.io/docs/providers/azurerm/auth/azure_cli.html) available than when using Terrafrom: Azure CLI, Azure Managed Identity, Service Principal + Certificate or Service Principal + Password.
+
+When running Terratest on your development machine, I suggest that you use the same authentication method than you use with Terraform, for example let Terraform use your Azure CLI token. When running in an automated pipeline, Managed Identities (on self-hosted agent, for example) or service principal are better solutions. But we will talk about that in the next part.
+
+## Case study: Azure Kubernetes Service
+
+Now that you have all the basics about Terratest, that you have it on your machine and that you have understood how it connects to Microsoft Azure, let's see how it is possible to use it to test the [Azure Kubernetes Service module of the reference implementation](https://github.com/jcorioland/terraform-azure-ref-aks-module) that comes with this blog post series!
+
+Look at the [test folder](https://github.com/jcorioland/terraform-azure-ref-aks-module/tree/master/test) of the AKS module repository. It contains several things:
+
+* A `dependencies` folder, that is responsible for deploying all the infrastructure that should be available when the AKS module is deployed (basically the core networking)
+* A `fixture` folder that contains the Terraform code that we want to test, here the AKS module:
+
+```hcl
+module "tf-ref-aks-module" {
+  source                          = "../../"
+  environment                     = "${var.environment}"
+  location                        = "${var.location}"
+  kubernetes_version              = "${var.kubernetes_version}"
+  service_principal_client_id     = "${var.service_principal_client_id}"
+  service_principal_client_secret = "${var.service_principal_client_secret}"
+  ssh_public_key                  = "${file("~/.ssh/testing_rsa.pub")}"
+}
+```
+
+* A Go [code file](https://github.com/jcorioland/terraform-azure-ref-aks-module/blob/master/test/aks_kubeconfig_test.go) that contains the actual code of the test.
+
+The `TestAKSKubeConfig` is the main test function of the file. It's the entry point that will be called when launching the Go test command. It contains all the steps described previously:
+
+The Terraform configuration:
+
+```go
+terraformFixtureOptions := &terraform.Options{
+    TerraformDir: "./fixture",
+    VarFiles:     []string{"testing.tfvars"},
+}
+```
+
+The Terraform initialization, deployment and destroy:
+
+```go
+defer terraform.Destroy(t, terraformFixtureOptions)
+terraform.InitAndApply(t, terraformFixtureOptions)
+```
+
+The test itself:
+
+```go
+aksKubeConfig := terraform.Output(t, terraformFixtureOptions, "aks_kube_config")
+
+err := testKubeConfig(aksKubeConfig)
+if err != nil {
+    t.Fatalf("AKS KubeConfig test has failed: %e", err)
+}
+```
+
+What is interesting here is that we retrieve the Kubernetes configuration from the outputs of the AKS module deployment to be able to pass it to the `testKubeConfig` function that is responsible for testing it. This function uses the Kubernetes Go SDK to connect to the deployed cluster and validate that it has two nodes:
+
+```go
+func testKubeConfig(aksKubeConfig string) error {
+	// get a bytes array with the AKS kube config
+	kubeconfigBytes := []byte(aksKubeConfig)
+
+	// write a temporary file with kube config
+	err := ioutil.WriteFile("/tmp/kubeconfig", kubeconfigBytes, 0644)
+	if err != nil {
+		return err
+	}
+
+	// create config from file
+	config, err := clientcmd.BuildConfigFromFlags("", "/tmp/kubeconfig")
+	if err != nil {
+		return err
+	}
+
+	// create a new Kubernetes client using the config
+	client, err := kubernetes.NewForConfig(config)
+	if err != nil {
+		return err
+	}
+
+	// retrieve the list of nodes
+	nodesList, err := client.CoreV1().Nodes().List(metav1.ListOptions{})
+	if err != nil {
+		return err
+	}
+
+	// check there are two nodes
+	expectedNodesCount := 2
+	actualNodesCount := len(nodesList.Items)
+	if actualNodesCount != expectedNodesCount {
+		return fmt.Errorf("Expected nodes count = %d, Actual = %d", expectedNodesCount, actualNodesCount)
+	}
+
+	return nil
+}
+```
+
+*Note: you can also notice that the init, apply and destroy sequence is done for the dependencies folder before deploying Azure Kubernetes Service - in that way everything will be created and then removed. It is also possible to just assume that tests are ran in sequence and that everything will be deleted by another process. It's up to you :-)*
+
+## Running the test
+
+The test is ready to be run! This is maybe the simple step of the whole process, because Terratest is integrated with the Go test framework. You just need to make sure that your work is in your Go workspace (GOPATH) and then run:
+
+```bash
+# ensure dependencies
+dep ensure
+
+# set environment variables
+export TF_VAR_service_principal_client_id=$SERVICE_PRINCIPAL_CLIENT_ID
+export TF_VAR_service_principal_client_secret=$SERVICE_PRINCIPAL_CLIENT_SECRET
+
+# run test
+go test -v ./test/ -timeout 30m | tee test_output.log
+terratest_log_parser -testlog test_output.log -outputdir test_output
+```
+
+The command `dep ensure` is responsible for downloading the Go dependencies that your project needs (in that case, Terratest and Kubernetes SDK). The two environment variables are specific variables for the Azure Kubernetes Service deployment. The `go test` command is actually launching the tests defined into the `test` directory. Finally, the `terratest_log_parser` allows to generate an XML file with the test result in the JUnit format. This will help to integrate with Azure DevOps, but again, this will be used in the next part of the series.
+
+All that you have to do is to wait for the test for being completed. Because the test will really deploy all the infrastructure defined in the dependencies and fixture it can take a while before it is completed.
+
+## Conclusion
+
+In this blog post, I have explained how you can use the Terratest framework and the Go language to run integration / validation test of your Terraform deployment. The next post of the series will discuss continuous integration (CI) and more specifically how you can use Docker and Azure Pipeline to run these test each time you update your infrastructure code, as you would do for any application code.
+
+Stay tuned!
