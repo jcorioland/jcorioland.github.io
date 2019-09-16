@@ -182,6 +182,49 @@ terratest_log_parser -testlog test_output.log -outputdir test_output
 
 All that you have to do is to wait for the test to be completed. Because the test will really deploy all the infrastructure defined in the dependencies and fixture it can take a while before it is completed.
 
+Here is a (truncated) example of log that you'll get:
+
+```bash
+=== RUN   TestAKSKubeConfig
+=== PAUSE TestAKSKubeConfig
+=== CONT  TestAKSKubeConfig
+TestAKSKubeConfig 2019-09-03T08:29:39Z retry.go:72: terraform [init -upgrade=false]
+TestAKSKubeConfig 2019-09-03T08:29:39Z command.go:87: Running command terraform with args [init -upgrade=false]
+TestAKSKubeConfig 2019-09-03T08:29:39Z command.go:158: 
+TestAKSKubeConfig 2019-09-03T08:29:39Z command.go:158: Initializing the backend...
+TestAKSKubeConfig 2019-09-03T08:29:39Z command.go:158: 
+TestAKSKubeConfig 2019-09-03T08:29:39Z command.go:158: Initializing provider plugins...
+TestAKSKubeConfig 2019-09-03T08:29:39Z command.go:158: - Checking for available provider plugins...
+TestAKSKubeConfig 2019-09-03T08:29:39Z command.go:158: - Downloading plugin for provider "azurerm" (terraform-providers/azurerm) 1.33.1...
+TestAKSKubeConfig 2019-09-03T08:29:41Z command.go:158: 
+
+...
+
+TestAKSKubeConfig 2019-09-03T08:35:20Z command.go:158: module.tf-ref-aks-module.azurerm_kubernetes_cluster.aks: Still creating... [5m0s elapsed]
+TestAKSKubeConfig 2019-09-03T08:35:30Z command.go:158: module.tf-ref-aks-module.azurerm_kubernetes_cluster.aks: Still creating... [5m10s elapsed]
+
+...
+
+TestAKSKubeConfig 2019-09-03T08:46:58Z command.go:158: 
+TestAKSKubeConfig 2019-09-03T08:46:58Z command.go:158: Destroy complete! Resources: 3 destroyed.
+--- PASS: TestAKSKubeConfig (1039.53s)
+PASS
+ok  	aks-module/test	1039.539s
+time="2019-09-03T08:46:58Z" level=info msg="reading from file"
+time="2019-09-03T08:46:58Z" level=info msg="Directory /go/src/aks-module/test_output already exists"
+time="2019-09-03T08:47:02Z" level=info msg="Directory /go/src/aks-module/test_output already exists"
+time="2019-09-03T08:47:02Z" level=info msg="Closing all the files in log writer"
+time="2019-09-03T08:47:02Z" level=info msg="Directory /go/src/aks-module/test_output already exists"
+total 84
+drwxr-xr-x 2 vsts docker  4096 Sep  3 08:47 .
+drwxr-xr-x 6 vsts docker  4096 Sep  3 08:28 ..
+-rw-r--r-- 1 root root     326 Sep  3 08:47 report.xml
+-rw-r--r-- 1 root root      70 Sep  3 08:47 summary.log
+-rw-r--r-- 1 root root   65187 Sep  3 08:47 TestAKSKubeConfig.log
+```
+
+*Note: you can also have a look to [the tests of the common module](https://github.com/jcorioland/terraform-azure-ref-common-module/blob/master/test/common_module_test.go) that uses the Azure Go SDK to validate that resources have been created correctly.*
+
 ## Conclusion
 
 In this blog post, I have explained how you can use the Terratest framework and the Go language to run integration / validation tests of your Terraform deployments. The next post of the series will discuss continuous integration (CI) and more specifically how you can use Docker and Azure Pipeline to run these test each time you update your infrastructure code, as you would do for any application code.
