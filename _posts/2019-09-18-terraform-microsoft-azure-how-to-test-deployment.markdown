@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Terraform on Microsoft Azure - Part 5: How to test your Terraform deployments?"
-date:   2019-09-18 14:00:00 +0200
+date:   2019-09-18 13:30:00 +0200
 categories: 
 - Microsoft Azure
 - DevOps
