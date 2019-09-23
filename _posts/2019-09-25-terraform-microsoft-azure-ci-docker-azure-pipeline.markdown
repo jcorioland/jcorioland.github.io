@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Terraform on Microsoft Azure - Part 6: Continuous Integration using Docker and Azure Pipeline"
-date:   2019-09-26 10:00:00 +0200
+date:   2019-09-25 14:00:00 +0200
 categories: 
 - Microsoft Azure
 - DevOps
@@ -242,6 +242,6 @@ Once completed, you can see the test results directly in Azure DevOps dashboard:
 
 ## Conclusion
 
-In this blog post, I have explained how to use Terratest, Docker and Azure Pipeline to trigger an integration test as soon as new Terraform code is committed. Doing this will help you to maintain high quality infrastructure code. In the next post of the series, I will discuss about going to the next level and implement continuous deployment of the infrastructure using Azure Pipeline.
+In this blog post, I have explained how to use Terratest, Docker and Azure Pipeline to trigger an integration test as soon as new Terraform code is committed. Doing this will help you to maintain high quality infrastructure code. In the next post of the series, I will discuss about going to the next level and use Azure Pipeline to deploy your infrastructure.
 
 Stay tuned!
