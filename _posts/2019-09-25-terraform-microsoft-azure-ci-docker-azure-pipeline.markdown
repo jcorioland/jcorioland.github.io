@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Terraform on Microsoft Azure - Part 6: Continuous Integration using Docker and Azure Pipeline"
-date:   2019-09-25 14:00:00 +0200
+date:   2019-09-25 12:30:00 +0200
 categories: 
 - Microsoft Azure
 - DevOps
