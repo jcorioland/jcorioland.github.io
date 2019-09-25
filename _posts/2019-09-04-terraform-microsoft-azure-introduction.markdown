@@ -8,6 +8,7 @@ categories:
 - Terraform
 author: 'Julien Corioland'
 identifier: '1465446e-1175-4bab-b4f1-c02eb42c59a2'
+image: /images/terraform-microsoft-azure-introduction/terraform-azure.png
 ---
 
 Recently, I have been involved in several projects to help customers to improve the way they are dealing with their infrastructure deployments. Cloud platforms like Microsoft Azure enable a high level of automation of these deployments and there are several options and tools available to you to make sure that you are able to deploy the different components of your infrastructure in an automated, repeatable and idempotent way.

@@ -15,7 +15,7 @@
       </script>
     {% endif %}
     <meta charset="UTF-8">
-    <meta property="og:image" content="http://blog.jcorioland.io/assets/images/profile.jpg" />
+    <meta property="og:image" content="{% if page.image %}{{ site.url }}{{ page.image }}{% else %}{{ site.url }}{{ site.image }}{% endif %}" />
 {% seo %}
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#157878">

@@ -8,6 +8,7 @@ categories:
 - Terraform
 author: 'Julien Corioland'
 identifier: '1465446e-1175-4bab-b4f1-c02eb42c59a6'
+image: /images/terraform-microsoft-azure-introduction/terraform-azure.png
 ---
 
 This blog post is part of the series about using [Terraform on Microsoft Azure](https://blog.jcorioland.io/archives/2019/09/04/terraform-microsoft-azure-introduction.html). In the [previous article](https://blog.jcorioland.io/archives/2019/09/18/terraform-microsoft-azure-how-to-test-deployment.html), I detailled how you can use the Terratest framework to create and run Golang integration tests for your Terraform deployments. In this new part, I will discuss about automating these tests using Docker containers and Azure Pipeline.

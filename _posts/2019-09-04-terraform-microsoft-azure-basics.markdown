@@ -8,6 +8,7 @@ categories:
 - Terraform
 author: 'Julien Corioland'
 identifier: '1465446e-1175-4bab-b4f1-c02eb42c59a3'
+image: /images/terraform-microsoft-azure-introduction/terraform-azure.png
 ---
 
 This blog post is part of the series about using [Terraform on Microsoft Azure](/archives/2019/09/04/terraform-microsoft-azure-introduction.html). In this part, I will discuss about the basics of Terraform and how you can get started easily with it to deploy infrastructure to Azure.

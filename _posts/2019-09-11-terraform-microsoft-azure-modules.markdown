@@ -8,6 +8,7 @@ categories:
 - Terraform
 author: 'Julien Corioland'
 identifier: '1465446e-1175-4bab-b4f1-c02eb42c59a4'
+image: /images/terraform-microsoft-azure-introduction/terraform-azure.png
 ---
 
 This blog post is part of the series about using [Terraform on Microsoft Azure](https://blog.jcorioland.io/archives/2019/09/04/terraform-microsoft-azure-introduction.html). In this part, I will discuss about how you can organize your Terraform files and how to maximize code reuse, especially using Terraform modules.

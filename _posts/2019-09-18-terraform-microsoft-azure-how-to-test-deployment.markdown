@@ -8,6 +8,7 @@ categories:
 - Terraform
 author: 'Julien Corioland'
 identifier: '1465446e-1175-4bab-b4f1-c02eb42c59a5'
+image: /images/terraform-microsoft-azure-introduction/terraform-azure.png
 ---
 
 This blog post is part of the series about using [Terraform on Microsoft Azure](https://blog.jcorioland.io/archives/2019/09/04/terraform-microsoft-azure-introduction.html). So far, I've discussed about Infrastructure as Code concepts, Terraform basics and best practices in term of remote state management, code organization and modules. In this new part, I'd like to give you some insights about how you can test your Terraform deployments.
