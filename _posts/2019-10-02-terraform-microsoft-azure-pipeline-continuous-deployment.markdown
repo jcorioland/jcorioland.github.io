@@ -93,6 +93,17 @@ Each step is identified as a task in the YAML pipeline:
 
 *Note: I have used [this Azure DevOps task from the marketplace](https://marketplace.visualstudio.com/items?itemName=charleszipp.azure-pipelines-tasks-terraform) to be able to work with Terraform inside the pipeline. You need to install it on your Azure DevOps organization, as a prerequisite.*
 
+This task allows to manage [Terraform remote state management](https://blog.jcorioland.io/archives/2019/09/09/terraform-microsoft-azure-remote-state-management.html) inside the pipeline, by specifying the information about the Azure storage account to use to store the state:
+
+```yaml
+backendAzureRmResourceGroupLocation: $(location)
+backendAzureRmResourceGroupName: $(tfStateResourceGroupName)
+backendAzureRmStorageAccountName: $(tfStateAzureStorageAccountName)
+backendAzureRmStorageAccountSku: $(tfStateAzureStorageAccountSku)
+backendAzureRmContainerName: $(tfStateContainerName)
+backendAzureRmKey: 'common.tfstate'
+```
+
 The complete Azure Pipeline is available [here](https://github.com/jcorioland/terraform-azure-reference/blob/master/azure-pipelines.yml).
 
 ## Azure DevOps pipelines and variables
@@ -140,4 +151,10 @@ That's all! Having your pipeline defined in YAML right inside your code reposito
 
 ## Conclusion
 
-In this blog post, I explained how to implement continuous infrastructure deployment using Terraform and Azure Pipeline. It concludes (for now :-)) this series about using Terraform on Microsoft Azure. I really hope that you have enjoyed read it and that it will help you to implement infrastructure as code best practices in your projects!
+In this blog post, I explained how to implement continuous infrastructure deployment using Terraform and Azure Pipeline. It concludes (for now :-)) this series about using Terraform on Microsoft Azure. I tried to explain what best practices you can implement in term of [Terraform source code organization and modularization](https://blog.jcorioland.io/archives/2019/09/11/terraform-microsoft-azure-modules.html), [remote state management](https://blog.jcorioland.io/archives/2019/09/09/terraform-microsoft-azure-remote-state-management.html), [continuous integration](https://blog.jcorioland.io/archives/2019/09/25/terraform-microsoft-azure-ci-docker-azure-pipeline.html) and [testing](https://blog.jcorioland.io/archives/2019/09/18/terraform-microsoft-azure-how-to-test-deployment.html) and finally in this post, continuous deployment.
+
+I really hope that you have enjoyed read it and that it will help you to implement infrastructure as code best practices in your projects!
+
+![Terraform on Microsoft Azure](/images/terraform-microsoft-azure-introduction/terraform-azure.png)
+
+Cheers!
