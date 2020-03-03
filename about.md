@@ -8,7 +8,7 @@ permalink: /about/
 
 ![Julien Corioland](/assets/images/about.jpg)
 
-I am a Senior Software Engineer and Cloud Architect, leaving in Paris and working for Microsoft since 2015. Before joining Microsoft, I've been a developer and trainer for 7 years, mostly on Microsoft .NET, Web and cloud technologies.
+I am a Senior Software Engineer and Cloud Architect, living in Paris and working for Microsoft since 2015. Before joining Microsoft, I've been a developer and trainer for 7 years, mostly on Microsoft .NET, Web and cloud technologies.
 
 I love to learn new things and share my experiments with other developers around the world, it could be by being a speaker in various conferences or on this blog. Before joining Microsoft I have been awarded as a **Microsoft Most Valuable Professional** for almost **7 years**.
 
