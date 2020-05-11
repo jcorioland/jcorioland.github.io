@@ -188,7 +188,7 @@ Let's try to regenerate the graph again:
 
 As you can see on the graph, now the dependency is explicit, and it's easy for Terraform to know that it must delete the association between NIC and ASG before deleting the virtual machine resources.
 
-And it solved our issue!
+Bug fixed! :-)
 
 ## Conclusion
 
