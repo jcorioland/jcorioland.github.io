@@ -74,7 +74,7 @@ resource "azurerm_virtual_machine" "vm" {
 }
 ```
 
-> Note: This is an extract of the sub-module that deploys a virtual machine, link it to the existing virtual network and to the application security group. It is not a working code sample as I have removed all parts/properties that are not related to NIC, VNET/Subnet and VMs, for readibility.
+> Note: This is an extract of the module that deploys a virtual machine, link it to the existing virtual network and to the application security group. It is not a working code sample as I have removed all parts/properties that are not related to NIC, VNET/Subnet and VMs, for readibility.
 
 ## Implicit vs Explicit dependencies in Terraform
 
