@@ -78,7 +78,7 @@ resource "azurerm_virtual_machine" "vm" {
 
 ## Implicit vs Explicit dependencies in Terraform
 
-Terraform deals with two kinds of dependencies between the resources it manages: implicit dependencies and explicit dependencies. Implicit dependencies, like their names suggest, are automatically detected by Terraform. For example, in the code below, there is an implcit dependency between the network interface and the virtual machine, because the it uses the network interface:
+Terraform deals with two kinds of dependencies between the resources it manages: implicit dependencies and explicit dependencies. Implicit dependencies, like their names suggest, are automatically detected by Terraform. For example, in the code below, there is an implicit dependency between the network interface and the virtual machine, because the VM resource uses the network interface `id`:
 
 ```hlc
 resource "azurerm_virtual_machine" "vm" {
