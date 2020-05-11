@@ -22,8 +22,6 @@ Before detailling the issue, let me give you some context. The Terraform module 
 
 ![Architecture Diagram](../images/terraform-implicit-explicit-dependencies-between-resources/architecture-diagram.jpg)
 
-In reallity, the resources related to VMs represented in module B above are in a sub-module, used by module B, but it's not really relevant at the end. It just lead us to some wrong assumption about what we were having the issue!
-
 And now, the error we were encountering, *sometime*, when calling `terraform destroy`:
 
 ```console
