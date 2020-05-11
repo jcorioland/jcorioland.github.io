@@ -7,7 +7,7 @@ categories:
 - Terraform
 author: 'Julien Corioland'
 identifier: '9b078f9b-a1f7-4e37-b68f-ec086d9935a6'
-image: /images/terraform-microsoft-azure-introduction/terraform-azure.png
+image: /images/terraform-implicit-explicit-dependencies-between-resources/graph-with-depends-on.jpg
 ---
 
 Recentely, I and my colleague [April](TODO:link) have been struggling on an error that was happening randomly when calling `terraform destroy` on a Terraform module we were working on. You know, this kind of issue that first gives you a lot of satisfaction when you solve it, but then frustration because the solution is so simple that you are wondering why you spent so much time on it! Everything was about explicit and implicit dependencies between Terraform resources. Let me explain...
