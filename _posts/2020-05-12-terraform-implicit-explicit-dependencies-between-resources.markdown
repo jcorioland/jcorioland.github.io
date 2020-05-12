@@ -18,7 +18,7 @@ Recentely, I and my colleague [April](https://twitter.com/TheAprilEdwards) have 
 
 Before detailling the issue, let me give you some context. The Terraform module *(Module B, on the diagram below)* we were working on is responsible for deploying resources (virtual machines, application security group (ASG) etc.) into an existing virtual network, managed by another Terraform module *(Module A, on the diagram below)*, and adding some network security rules related to the ASG into a network security group (NSG) also managed by the other Terraform module *(Module A, on the diagram below)*. Looking something like the following:
 
-![Architecture Diagram](../images/terraform-implicit-explicit-dependencies-between-resources/architecture-diagram.jpg)
+![Architecture Diagram](/images/terraform-implicit-explicit-dependencies-between-resources/architecture-diagram.jpg)
 
 And now, the error we were encountering, *sometime*, when calling `terraform destroy`:
 
@@ -160,7 +160,7 @@ terraform graph | dot -Tsvg > graph.svg
 
 And voilà, a beautiful dependency graph that really helps to figure out what's going on:
 
-![First Dependency Graph - no explicit dependency](../images/terraform-implicit-explicit-dependencies-between-resources/graph-no-depends-on.jpg)
+![First Dependency Graph - no explicit dependency](/images/terraform-implicit-explicit-dependencies-between-resources/graph-no-depends-on.jpg)
 
 Looking at the three resources that are important for us in that case, we can clearly see that there is no implicit dependencies between the virtual machines and the application security group. They just share a common dependency, the network interface, but not directly, through the association between the ASG and the NIC (the `azure_network_interface_application_security_group_association` resource).
 
@@ -182,7 +182,7 @@ resource "azurerm_virtual_machine" "vm" {
 
 Let's try to regenerate the graph again:
 
-![Second Dependency Graph - with explicit dependency](../images/terraform-implicit-explicit-dependencies-between-resources/graph-with-depends-on.jpg)
+![Second Dependency Graph - with explicit dependency](/images/terraform-implicit-explicit-dependencies-between-resources/graph-with-depends-on.jpg)
 
 As you can see on the graph, now the dependency is explicit, and it's easy for Terraform to know that it must delete the association between NIC and ASG before deleting the virtual machine resources.
 
