@@ -32,11 +32,11 @@ If you are not in one of these cases, it should be possible for you to use any o
 
 There are different ways to create your own self-hosted agents:
 
-- it can be a physical or virtual machine running [Linux](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/v2-linux?view=azure-devops), [Windows](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/v2-windows?view=azure-devops) or [macOS](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/v2-osx?view=azure-devops) where you install and configure the Azure DevOps agent software
-- it can be a [Docker container](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/docker?view=azure-devops)
-- it can be a a set of virtual machines, living in an [Azure ScaleSet that you let Azure DevOps manage](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/scale-set-agents?view=azure-devops) (this feature is still in preview at the time I am writing this article)
+- using a physical or virtual machine running [Linux](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/v2-linux?view=azure-devops), [Windows](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/v2-windows?view=azure-devops) or [macOS](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/v2-osx?view=azure-devops) where you install and configure the Azure DevOps agent software
+- using a [Docker container](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/docker?view=azure-devops)
+- using a set of virtual machines, living in an [Azure ScaleSet that you let Azure DevOps manage](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/scale-set-agents?view=azure-devops) (this feature is still in preview at the time I am writing this article)
 
-Using the [terraform-azurerm-aci-devops-agent module](https://github.com/Azure/terraform-azurerm-aci-devops-agent), the agents will be running inside Docker containers, Linux or Windows, hosted on Azure Container Instance.
+With the [terraform-azurerm-aci-devops-agent module](https://github.com/Azure/terraform-azurerm-aci-devops-agent), the agents will be running inside Docker containers, Linux or Windows, hosted on Azure Container Instance.
 
 ## Build our own Docker image to run the DevOps agents
 
@@ -48,11 +48,11 @@ Once the Docker image is ready, it needs to be pushed to a registry. It could be
 
 The [README.md](https://github.com/Azure/terraform-azurerm-aci-devops-agent/blob/master/README.md) of the module has a bunch of examples about how to use it, but let's have a simple example here. Before running this module, we need to [create an agent pool in our Azure DevOps organization](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/pools-queues?view=azure-devops&tabs=yaml%2Cbrowser#creating-agent-pools) and a [personal access token](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/v2-linux?view=azure-devops#permissions) that it authorized to manage this agent pool.
 
-This configuration has 3 variables related to Azure DevOps:
+This module has three variables related to Azure DevOps:
 
-- `azure_devops_org_name`: the name of our Azure DevOps organization (if we are connecting to `https://dev.azure.com/helloworld`, then `helloworld` is our organization name)
-- `azure_devops_pool_name`: the name of the agent pool that we have created
-- `azure_devops_personal_access_token`: the personal access token that we have generated
+- `azure_devops_org_name`: the name of your Azure DevOps organization (if you are connecting to `https://dev.azure.com/helloworld`, then `helloworld` is your organization name)
+- `azure_devops_personal_access_token`: the personal access token that you have generated
+- `agent_pool_name`: both in the `linux_agents_configuration` and `windows_agents_configuration`, it is the name of the agent pool that you have created in which the Linux or Windows agents must be deployed
 
 Let's assume that we want to deploy 5 Azure DevOps agents into a pool named `private-aci-pool` running into a dedicated virtual network.
 
