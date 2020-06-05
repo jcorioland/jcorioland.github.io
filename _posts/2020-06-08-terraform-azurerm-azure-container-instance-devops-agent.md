@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Run Azure DevOps self-hosted agents in Azure Container Instance using Terraform"
-date:   2020-05-12 10:00:00 +0200
+date:   2020-06-08 14:00:00 +0200
 categories: 
 - Microsoft Azure
 - Terraform
@@ -94,12 +94,16 @@ Then, we can configure the module to create the Azure DevOps agents
 
 ```hcl
 module "aci-devops-agent" {
-  source                    = "Azure/aci-devops-agent/azurerm"
-  enable_vnet_integration   = true
-  create_new_resource_group = true
-  vnet_resource_group_name  = azurerm_resource_group.vnet-rg.name
-  vnet_name                 = azurerm_virtual_network.vnet.name
-  subnet_name               = azurerm_subnet.aci-subnet.name
+  source                = "Azure/aci-devops-agent/azurerm"
+  resource_group_name   = "rg-aci-devops"
+  location              = "westeurope"
+  create_resource_group = true
+
+  enable_vnet_integration  = true
+  vnet_resource_group_name = azurerm_resource_group.vnet-rg.name
+  vnet_name                = azurerm_virtual_network.vnet.name
+  subnet_name              = azurerm_subnet.aci-subnet.name
+
   linux_agents_configuration = {
     agent_name_prefix = "linuxagent"
     count             = 5
@@ -109,8 +113,6 @@ module "aci-devops-agent" {
     cpu               = 1
     memory            = 4
   }
-  resource_group_name                = "rg-aci-devops"
-  location                           = "westeurope"
   azure_devops_org_name              = "DEVOPS_ORG_NAME"
   azure_devops_personal_access_token = "DEVOPS_ACCESS_TOKEN"
 }
