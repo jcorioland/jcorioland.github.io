@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Run Azure DevOps self-hosted agents in Azure Container Instance using Terraform"
-date:   2020-06-08 14:00:00 +0200
+date:   2020-06-08 10:45:00 +0200
 categories: 
 - Microsoft Azure
 - Terraform
@@ -15,7 +15,7 @@ Azure DevOps offers two kinds of pipeline agents: Microsoft-hosted agents, fully
 
 <!--more-->
 
-A lot of customers are asking for being able to spin up quickly Azure DevOps self-hosted agents. I have decided to develop a [Terraform module](https://github.com/Azure/terraform-azurerm-aci-devops-agent) that can help anyone to deploy one (or more) into a Docker container and host it quickly into [Azure Container Instance](https://azure.microsoft.com/en-us/services/container-instances/). Following this approach you can have one ore more agents up and running in only a few minutes. Very useful when you have build workloads that require to scale up & down very frequently and that you want to minimize costs of hosting build agents.
+A lot of customers are asking for being able to spin up quickly Azure DevOps self-hosted agents. I have decided to develop a [Terraform module](https://registry.terraform.io/modules/Azure/aci-devops-agent/azurerm/0.9.0) that can help anyone to deploy one (or more) into a Docker container and host it quickly into [Azure Container Instance](https://azure.microsoft.com/en-us/services/container-instances/). Following this approach you can have one ore more agents up and running in only a few minutes. Very useful when you have build workloads that require to scale up & down very frequently and that you want to minimize costs of hosting build agents.
 
 Before going into more details, I'd like to say **thank you** my colleagues [Yuping](https://github.com/yupwei68) and [Andreas](https://github.com/aheumaier) who helped me reviewing the module and this blog post.
 
@@ -36,7 +36,7 @@ There are different ways to create your own self-hosted agents:
 - using a [Docker container](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/docker?view=azure-devops)
 - using a set of virtual machines, living in an [Azure ScaleSet that you let Azure DevOps manage](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/scale-set-agents?view=azure-devops) (this feature is still in preview at the time I am writing this article)
 
-With the [terraform-azurerm-aci-devops-agent module](https://github.com/Azure/terraform-azurerm-aci-devops-agent), the agents will be running inside Docker containers, Linux or Windows, hosted on Azure Container Instance.
+With the [terraform-azurerm-aci-devops-agent module](https://registry.terraform.io/modules/Azure/aci-devops-agent/azurerm/0.9.0), the agents will be running inside Docker containers, Linux or Windows, hosted on Azure Container Instance.
 
 ## Build our own Docker image to run the DevOps agents
 
