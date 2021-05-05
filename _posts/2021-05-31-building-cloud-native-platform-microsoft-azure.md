@@ -15,6 +15,10 @@ Over the past 8 months, my team and I have been engaged with a large ISV to help
 
 In this article, I will share some learnings and thoughts about different items that might be useful for you if you are starting on such a project, so you can get the best of Microsoft Azure to build cloud native platform for your company application developers and operators. I will not detail everything about the implementation itself, but stay at the architecture overview level of the discussion. That's being said, the following contains a lot of external links to specific topics, if you want to go deeper into each of them. 
 
+The goal of this article is not to go into details about the application layer itself and how to deploy applications inside a Kubernetes cluster. There is already tons of articles and documentations about that. If you want to know more about how to get started with application development/deployment with Kubernetes on Azure, you can start from [there](https://docs.microsoft.com/en-us/azure/aks/concepts-clusters-workloads).
+
+What I am interested in sharing today is the hidden side of the iceberg: how it's possible to build on top of Azure Kubernetes Service (AKS) and provide to internal or external customers a platform where they can deploy applications, without even thinking or knowing that it actually runs on Azure. Actually, it's not only about AKS. It's about how it's possible to automate the provisioning of an enterprise-grade, high scale, secured Kubernetes on Azure.
+
 <!--more-->
 
 ## Cloud Native Platform, what does it mean?
@@ -25,15 +29,11 @@ The Cloud Native Computing Foundation (CNCF) provides [one official definition](
 
 *These techniques enable loosely coupled systems that are resilient, manageable, and observable. Combined with robust automation, they allow engineers to make high-impact changes frequently and predictably with minimal toil.*
 
-The idea behind this is to try to codify and unify the way to build, deploy and run applications in the enterprise. And they are more and more company trying to build a consistent platform across cloud / hybrid cloud to ensure they use the same tools and process to deploy all their applications. As an application developer or operator, you don't want to care about where the application runs it could be in a private or public cloud. You don't want to have to implement behaviors in the applications because it can run in different places. As well as a DevOps, you don't want to have different way of packaging, deploying and operating applications across the company, depending on where they are actually running.
+The idea behind this is to try to codify and unify the way to build, deploy and run enterprise applications. There are more and more companies trying to build a consistent platforms across clouds (public, private or hybrid) to ensure they use the same tools and process to deploy all their applications. As an application developer or operator, you don't want to care about where the application runs it could be in a private or public cloud. You don't want to have to implement behaviors in the applications because it can run in different places. As well as a DevOps, you don't want to have different way of packaging, deploying and operating applications across the company, depending on where they are actually running.
 
 Building a platform that targets multiple clouds is not an easy task. It's a trade off between going with full managed 1st party technologies (most of the time available as PaaS/SaaS, so easy to use / operate), and cross-platforms technologies coming from the [cloud-native landscape](https://landscape.cncf.io/). The ultimate goal is to abstract the underlying platform from your end users (applications developers and operators), but also make sure you do not take any architecture decision that could be influenced by how you designed something on another cloud or on-premise.
 
 No doubt that Kubernetes is the central piece of cloud-native platform these days, as it is designed to provide abstraction of the infrastructure on top of which it is running. Kubernetes comes with a complete deployment and development model to ensure that applications running in Kubernetes do not have to know or interact with the actual machines they are running on, or about network, persistent storage, security boundaries they are using.
-
-The goal of this article is not to go into details about the application layer itself and how to deploy applications inside a Kubernetes cluster. There is already tons of articles and documentations about that. If you want to know more about how to get started with application development/deployment with Kubernetes on Azure, you can start from [there](https://docs.microsoft.com/en-us/azure/aks/concepts-clusters-workloads).
-
-What I am interested in sharing today is the hidden side of the iceberg: how it's possible to build on top of Azure Kubernetes Service (AKS) and provide to internal or external customers a platform where they can deploy applications, without even thinking or knowing that it actually runs on Azure. Actually, it's not only about AKS. It's about how it's possible to automate the provisioning of an enterprise-grade, high scale, secured Kubernetes on Azure.
 
 But first thing first... let's go through about some basics.
 
