@@ -112,11 +112,13 @@ Instead of writing your own Kubernetes-RBAC manifest referencing users and group
 ### Kubernetes cluster design
 
 This section will discuss about the design of the Kubernetes cluster itself, especially about node pools, availability zones support, scaling/auto-scaling operations etc.
+**TODO**
 
 ### KeyVault Secret Management
 
 Your applications running in Kubernetes need secrets.  
 https://docs.microsoft.com/azure/aks/csi-secrets-store-driver
+**TODO**
 
 ## Observability
 
@@ -125,16 +127,19 @@ Observability is a central piece of your cloud native platform. There are differ
 If you build an Azure-only platform, I would recommend to go with the first option, as you will get everything you need very easily. If you are building a platform across multiple cloud then the second option is probably better for you. You want to have the same dashboards, the same alerts, and the same observability practices for your platform even if they are running at different places.
 
 ### Azure Monitor - The Azure built-in way
-
 Azure Monitor + Container Insights
+**TODO**
 
 ### Prometheus, Grafana, ELK...
+**TODO**
 
 #### Azure Monitor integration with Prometheus/Grafana
 
 - Native integration between Grafana and Azure Monitor: https://grafana.com/grafana/plugins/grafana-azure-monitor-datasource/ - Grafana connects directly to Azure Monitor data, no need for Prometheus in the middle
 - If you need ELK to be the "source of truth", aggreating all metrics from all platforms from any cloud, then you can use [Metricbeat](https://www.elastic.co/guide/en/beats/metricbeat/7.10/metricbeat-module-azure.html) to extract from Azure Monitor and import to Elastic Search
 - If you need Prometheus to be the "source of truth", agreggating all metrics from all platforms from any cloud, then you can use [Promitor](https://promitor.io) to scrap automatically metrics from Azure monitor and import them into Prometheus.
+
+**TODO**
 
 #### Azure Logs Streaming
 
@@ -143,10 +148,14 @@ From this, it's possible to use a components like [Filebeat](https://www.elastic
 
 You can read more about [Azure observability with Elastic on this page.](https://www.elastic.co/blog/monitoring-azure-infrastructure-with-filebeat-and-elastic-observability)
 
+**TODO**
+
 ## Cost optimization
 
 Turning ON/OFF Environment
 Spot VMs
+**TODO**
 
 ## Conclusion
+**TODO**
 
