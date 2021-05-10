@@ -35,8 +35,6 @@ No doubt that Kubernetes is the central piece of cloud-native platform these day
 
 The goal of this article is not to go into details about the application layer itself and how to deploy applications inside a Kubernetes cluster. There is already tons of articles and documentations about that. If you want to know more about how to get started with application development/deployment with Kubernetes on Azure, you can start from [there](https://docs.microsoft.com/azure/aks/concepts-clusters-workloads).
 
-What I am interested in sharing today is the hidden side of the iceberg: how it's possible to build on top of Azure Kubernetes Service (AKS) and provide to internal or external customers a platform where they can deploy applications, without even thinking or knowing that it actually runs on Azure. Actually, it's not only about AKS. It's about how it's possible to automate the provisioning of an enterprise-grade, high scale, secured Kubernetes on Azure.
-
 But first thing first... let's go through about some basics.
 
 ## Landing Zone
