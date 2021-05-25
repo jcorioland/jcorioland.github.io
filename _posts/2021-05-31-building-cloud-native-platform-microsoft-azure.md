@@ -1,19 +1,21 @@
 ---
 layout: post
-title:  "Building a cloud native platform on top of Microsoft Azure"
+title:  "Building a cloud native platform on top of Microsoft Azure and Kubernetes"
 date:   2021-05-01 10:00:00 +0200
 categories: 
-- DevOps
-- Kubernetes
 - Microsoft Azure
+- Kubernetes
+- DevOps
 author: 'Julien Corioland'
 identifier: 'af64746b-9155-4fc0-b596-8a5dd7232422'
 image: /images/todo
 ---
 
-Over the past 8 months, my team and I have been engaged with a large ISV to help build and run a cloud native platform on top of Microsoft Azure. The same platform can also run on-premises and on other public clouds. 
+Over the past 8 months, my team and I have been engaged with a large ISV to help build and run a cloud native platform on top of Microsoft Azure and Kubernetes.
 
 In this article, I will share some learnings and thoughts about different items that might be useful for you if you are starting on such a project, so you can get the best of Microsoft Azure to build cloud native platform for your company application developers and operators. I will not detail everything about the implementation itself, but stay at the architecture overview level of the discussion. That's being said, the following contains a lot of external links to specific topics, if you want to go deeper into each of them.
+
+Another way to see this post is: *A summary of 8 months of design, architecture and automation to build a cloud native platform on top of Azure*.
 
 Let's start by understanding what is a cloud native platform. 
 
@@ -35,7 +37,7 @@ No doubt that Kubernetes is the central piece of cloud-native platform these day
 
 The goal of this article is not to go into details about the application layer itself and how to deploy applications inside a Kubernetes cluster. There is already tons of articles and documentations about that. If you want to know more about how to get started with application development/deployment with Kubernetes on Azure, you can start from [there](https://docs.microsoft.com/azure/aks/concepts-clusters-workloads).
 
-But first thing first... let's go through about some basics.
+But first thing first... let's discuss briefly about where it all start: the landing zones...
 
 ## Landing Zone
 
@@ -60,7 +62,7 @@ Obviously, the network topology will vary depending on your needs, but the princ
 - **AKS Subnet**: this is the subnet or subnets (if multiple clusters deployment) that will be used by Azure Kubernetes Service.
 - **Other Subnet**: any other subnet you need in the landing zone. 
 
-## Azure Kubernetes Service
+## Azure Kubernetes Service (AKS)
 
 ### Private Cluster Deployment
 
@@ -72,6 +74,18 @@ When you chose this deployment mode for AKS, you end with:
 
 Deploying a private AKS cluster does not mean that you cannot have a public endpoint for your applications running in the cluster. It means that the Kubernetes management endpoint (api server) is private and reachable only from a private endpoint in a given subnet.
 In addition to this private cluster deployment, you might have additional network rules that forces the traffic to go through a firewall (in Azure or on-premises) or block Internet access for some resources. Azure Kubernetes Service requires that you open access to some well-known resources in order to be able to intialize and pull some container images, security patches etc. All you need to know about restricting AKS egress traffic is available [here](https://docs.microsoft.com/azure/aks/limit-egress-traffic).
+
+### Azure CNI vs Kubenet
+
+I think I had this conversation with every customers I helped deploy Kubernetes on Azure over the past years. Let me try to make it easy.
+
+*TL;DR: If you don't have any IP addresses usage restrictions (lucky you are!), don't even think about this and stay with Azure CNI, the default option. Consider Kubenet only if you need to save/reuse IP addresses between environments.*
+
+That's being said, Azure Kubernetes Service supports two plugins for networking: Kubenet or Azure CNI. In short:
+* Kubenet will allow to reuse IP CIDR between cluster, as it will create a dedicated private network for pods running in each cluster and use NAT to ensure communication from/to the outside of the cluster. Only nodes and (private) exposed services will get an IP address on the AKS subnet
+* Azure CNI will allocate an IP address from the AKS subnet for each and every pod, in addition to the nodes and (private) exposed services.
+
+You can read more about [Azure CNI vs Kubenet on this page](https://docs.microsoft.com/azure/aks/concepts-network#azure-virtual-networks) and understand what are the constraints and restrictions you might have when using Kubenet instead of Azure CNI, in case you have to.
 
 ### Cluster identities and separation of concerns
 
@@ -118,6 +132,31 @@ Your applications running in Kubernetes need secrets.
 https://docs.microsoft.com/azure/aks/csi-secrets-store-driver
 **TODO**
 
+### Kubernetes upgrades, patches etc.
+**TODO**
+
+### Cost optimization
+
+When building a platform in the cloud, cost management and especially cost optimization are important topics. Azure Kubernetes Services has some features that can help you to optimize costs, for example by turning off unused clusters, like development/tests environment, when they are not used or by using spot VMs.
+
+#### Azure Kubernetes Service - Start/Stop cluster
+
+AKS supports multiple pools for a single cluster. It allows you to mix SKU, scale pools differently depending on the workload they are running, share clusters but isolate workloads between teams, business units etc. AKS supports **System** and **User** pools. **System** pools are dedicated to run critical Kubernetes components (dns, metrics server etc.) and **User** pools are dedicated to run your applications. Every AKS cluster must have at least one System pool. If you have only 1 pool in your cluster, the System pool will also run your applications.
+
+AKS supports scaling **User** pools to 0 (i.e. the underlying VM scale sets contains 0 node) but it's not possible for **System** pools. You might have environment that you want shutdown when they are not used, to reduce the cost of your platform. You probably don't need to have development and test clusters running outside of working hours. This is where the [Start/Stop cluster feature](https://docs.microsoft.com/azure/aks/start-stop-cluster) becomes useful: it will allow to completely deallocate all compute resources for a given Kubernetes cluster.
+
+Using two simple commands:
+* `az aks stop` will stop a running cluster
+* `az aks start` will start a stopped cluster
+
+Together will a scheduler system (a bash script with a CRON or a [scheduled pipeline in Azure DevOps](https://docs.microsoft.com/azure/devops/pipelines/process/scheduled-triggers?view=azure-devops&tabs=yaml), for example), you will be able to schedule when you want some AKS cluster to be stopped and when you want them to be started again.
+
+#### Azure Kubernetes Service - Spot Virtual Machines
+
+[Spot Virtual Machines](https://docs.microsoft.com/azure/virtual-machines/spot-vms) are intended to optimize costs. It allows to benefits from the Azure unused capacity at low cost. The drawback of this is that it comes with no SLA and that the machines can be evicted at any time if Azure needs it back.
+
+AKS supports Spot VMs by offering to create a [Spot node pool](https://docs.microsoft.com/azure/aks/spot-node-pool). One way to see this feature is "built-in [chaos-engineering](https://docs.microsoft.com/azure/architecture/framework/resiliency/chaos-engineering) at low-cost". Of course, before using it you must ensure that your workloads running on these kind of pool will be designed to support it, as a virtual machine from the underlying scale set on which a given pod is running might be evicted at any time. You can read more about eviction policy [here](https://docs.microsoft.com/azure/virtual-machines/spot-vms#eviction-policy).
+
 ## Observability
 
 Observability is a central piece of your cloud native platform. There are different ways to implement observability on Azure. You can go with the Azure built-in stack like Azure Monitor, Logs Analytics etc. Or you can decide to plug external tools like Prometheus, Grafana, Elastic Search, Logstash, Kibana...
@@ -148,11 +187,9 @@ You can read more about [Azure observability with Elastic on this page.](https:/
 
 **TODO**
 
-## Cost optimization
+## Deployment and automation
 
-Turning ON/OFF Environment
-Spot VMs
-**TODO**
+Azure supports a wide variety of deployment tools so you can use the one that suits with your habits and existing toolset.
 
 ## Conclusion
 **TODO**
