@@ -121,19 +121,43 @@ For everything related to non-interactive login, like your automation pipeline d
 
 Instead of writing your own Kubernetes-RBAC manifest referencing users and group object ids, you might also want to enable [Azure RBAC support for Kubernetes](https://docs.microsoft.com/azure/aks/manage-azure-rbac), which let you assign Kubernetes-specific roles to Azure principals and groups.
 
-### Kubernetes cluster design
+### Secrets Management
 
-This section will discuss about the design of the Kubernetes cluster itself, especially about node pools, availability zones support, scaling/auto-scaling operations etc.
-**TODO**
+Your applications running in Kubernetes need secrets. By default, when you create [secrets](https://kubernetes.io/docs/concepts/configuration/secret/) in Kubernetes, values are stored in Kubernetes data store (etcd). When using Azure Kubernetes Service, [Etcd store is fully managed by AKS and the data is encrypted at REST](https://docs.microsoft.com/en-us/azure/aks/concepts-security#kubernetes-secrets). By extension, the same applies for all Kubernetes secrets.
 
-### KeyVault Secret Management
-
-Your applications running in Kubernetes need secrets.  
-https://docs.microsoft.com/azure/aks/csi-secrets-store-driver
-**TODO**
+To increase security, you might want to store your secrets in an Azure KeyVault and be able to read them directly using the secret Kubernetes API, to use the same manifests for your workloads. This is what will provide the [CSI Secrets Store Driver](https://docs.microsoft.com/en-us/azure/aks/csi-secrets-store-driver) for AKS.
 
 ### Kubernetes upgrades, patches etc.
-**TODO**
+
+Keeping updated the different components of the platform you are building is critical. First to ensure the first level of security patching, but also to allow you user to continue to innovate. Kubernetes is a platform that evolves quickly and that is always bringing new features for application developers and operators. It is important that you include in your service the ability to choose what version of Kubernetes people want to run, and that you provide a migration path between versions.
+
+Applying security patches, upgrading node images version or Kubernetes version will lead to VM reboot and eviction. In order for your customers' workloads to continue to work correctly, it's important that your operators' users have a good plan for availability, using Kubernetes pod disruption budgets. You can read more about this [here](https://docs.microsoft.com/azure/aks/operator-best-practices-scheduler#plan-for-availability-using-pod-disruption-budgets).
+
+#### Security patches
+
+Kubernetes relies on virtual machines that run an OS, Ubuntu or Windows Server (for [Windows](https://docs.microsoft.com/azure/aks/windows-container-cli) pools), when speaking about Azure Kubernetes Service. It's important that these virtual machines get the security updates in a continuous fashion. When you deploy an AKS cluster, the underlying VMs running in the nodes scale sets are automatically configured to retrieve these updates. But sometimes, VMs need to be rebooted. You can do it manually or use [Kured](https://docs.microsoft.com/azure/aks/node-updates-kured), a deamonset that will monitor nodes and detect when they need to be rebooted, following Kubernetes best practices (codorning, draining etc.)
+
+#### Node images upgrades
+
+When the AKS team [releases new features](https://github.com/Azure/AKS/releases), they also release new OS images. These images also come with the latest security patches for the underlying OS.
+
+If you upgrade the Kubernetes version of your cluster (see next section), you will automatically get the latest version of the underlying OS. But if you don't, you will stay with older version. It's possible to force the node image upgrade using the Azure CLI, as described on [this page](https://docs.microsoft.com/azure/aks/node-image-upgrade).
+
+#### Kubernetes version upgrade
+
+Kubernetes version upgrades should be a self-service operation provided by your platform, and it should not be forced for your users, apart if they are running an [unsupported version of Kubernetes](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions).
+
+When updating the version of Kubernetes in Azure Kubernetes Service, you must first ensure that the control plane (master nodes) are running a version that supports the targeted version (usually equal or upper). If it is not, then you must upgrade the control plan first.
+
+Once the control plane has been updated, you can choose between updated all your node pools or only some of them. This is also called in-place Kubernetes upgrade.
+
+During node pool upgrade, AKS will codorn an drain node one by one in the underlying scale set and replace them with a node running the new version of Kubernetes. You can control how many node are updated at the same time using [the surge parameter](https://docs.microsoft.com/azure/aks/upgrade-cluster#customize-node-surge-upgrade).
+
+Again, the workloads you are running in AKS must be designed to work with this kind of operations where node are rebooted / evicted. 
+
+Another approach could be a blue/green deployment at the infrastructure level: you deploy a complete new AKS cluster in the targeted new Kubernetes, migrate your workload, run your tests and then switch the traffic to the new infrastructure.  
+
+You can read more about patching and upgrade guidance in [the day-2 operations guide of the Azure Architecture Center](https://docs.microsoft.com/azure/architecture/operator-guides/aks/aks-upgrade-practices#cluster-upgrades).
 
 ### Cost optimization
 
@@ -149,7 +173,7 @@ Using two simple commands:
 * `az aks stop` will stop a running cluster
 * `az aks start` will start a stopped cluster
 
-Together will a scheduler system (a bash script with a CRON or a [scheduled pipeline in Azure DevOps](https://docs.microsoft.com/azure/devops/pipelines/process/scheduled-triggers?view=azure-devops&tabs=yaml), for example), you will be able to schedule when you want some AKS cluster to be stopped and when you want them to be started again.
+Together with a scheduler system (ex: a bash script with a CRON or a [scheduled pipeline in Azure DevOps](https://docs.microsoft.com/azure/devops/pipelines/process/scheduled-triggers?view=azure-devops&tabs=yaml), for example), you will be able to schedule when you want some AKS cluster to be stopped and when you want them to be started again. There is another well-documented example of [scheduling start/stop of AKS cluster using Logic Apps by Thomas Stringer](https://trstringer.com/schedule-aks-start-stop-automatically/).
 
 #### Azure Kubernetes Service - Spot Virtual Machines
 
