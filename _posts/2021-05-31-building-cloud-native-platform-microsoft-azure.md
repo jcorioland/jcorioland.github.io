@@ -183,24 +183,32 @@ AKS supports Spot VMs by offering to create a [Spot node pool](https://docs.micr
 
 ## Observability
 
-Observability is a central piece of your cloud native platform. There are different ways to implement observability on Azure. You can go with the Azure built-in stack like Azure Monitor, Logs Analytics etc. Or you can decide to plug external tools like Prometheus, Grafana, Elastic Search, Logstash, Kibana...
+Observability is a central piece of your cloud native platform. There are different ways to implement observability on Azure. You can go with the Azure built-in stack like Azure Monitor, Logs Analytics etc. Or you can decide to plug external tools like Prometheus, Grafana or ELK...
 
 If you build an Azure-only platform, I would recommend to go with the first option, as you will get everything you need very easily. If you are building a platform across multiple cloud then the second option is probably better for you. You want to have the same dashboards, the same alerts, and the same observability practices for your platform even if they are running at different places.
 
-### Azure Monitor - The Azure built-in way
-Azure Monitor + Container Insights
-**TODO**
+### Azure Monitor and Container Insights
 
-### Prometheus, Grafana, ELK...
-**TODO**
+Azure comes with everything you need to setup observability for your platform in a built-in and easy fashion, using [Azure Monitor and Container Insights](https://docs.microsoft.com/azure/azure-monitor/containers/container-insights-overview). It will give you all what you need in term of monitoring the containers running inside the cluster, resources usage like memory and CPU etc.
 
-#### Azure Monitor integration with Prometheus/Grafana
+When enabled, you can get all these information directly [from the Azure portal](https://docs.microsoft.com/azure/aks/kubernetes-portal), and browse your cluster using a nice dashboard (this replaces the deprecated regular Kubernetes dashboard).
 
-- Native integration between Grafana and Azure Monitor: https://grafana.com/grafana/plugins/grafana-azure-monitor-datasource/ - Grafana connects directly to Azure Monitor data, no need for Prometheus in the middle
-- If you need ELK to be the "source of truth", aggreating all metrics from all platforms from any cloud, then you can use [Metricbeat](https://www.elastic.co/guide/en/beats/metricbeat/7.10/metricbeat-module-azure.html) to extract from Azure Monitor and import to Elastic Search
-- If you need Prometheus to be the "source of truth", agreggating all metrics from all platforms from any cloud, then you can use [Promitor](https://promitor.io) to scrap automatically metrics from Azure monitor and import them into Prometheus.
+Like mentionned before, when you build a platform it's not just about Kubernetes. Even if it is a core piece of the platform you will probably run some other services in Azure, like message brokers, virtual machines, managed databases like SQL Server or PostgreSQL, for example.
 
-**TODO**
+All these resources comes with native integration with Azure Monitor. It will provide you one unified monitoring interface for all your needs. You can even extend the experience to the application/workloads running on the platform by suggesting to application developers and operators to use [Application Insights](https://docs.microsoft.com/azure/azure-monitor/app/app-insights-overview).
+
+### Other tools
+
+If you have chosen to rely on other tools like Prometheus, Grafana or ELK for observability, there are some interesting piece of integration with Azure to mention here.
+
+#### Azure Monitor third parties integration
+
+First of all, you can benefits from all the data from Azure Monitor and visualize it directly from Grafana, using the native [Grafana Azure Monitor DataSource plugin](https://grafana.com/grafana/plugins/grafana-azure-monitor-datasource/). When doing that, all the monitoring data will be collected and stored into Azure Monitor and Grafana will be able to connect to Azure monitor to extract the data and display it.
+
+When using external stores for logs and metrics, you might want to be able to extract data from Azure monitor for platform services. This might be even more important if you are building for multi-cloud. You probably don't want to have different tools for observability.
+
+* If you need to store metrics into Elastic Search you might want to have a look to [Metricbeat](https://www.elastic.co/guide/en/beats/metricbeat/7.10/metricbeat-module-azure.html) to extract from Azure Monitor and import to Elastic Search
+* If you need to store metrics into Prometheus then you can use [Promitor](https://promitor.io) to scrap automatically metrics from Azure monitor and import them into Prometheus.
 
 #### Azure Logs Streaming
 
@@ -209,12 +217,5 @@ From this, it's possible to use a components like [Filebeat](https://www.elastic
 
 You can read more about [Azure observability with Elastic on this page.](https://www.elastic.co/blog/monitoring-azure-infrastructure-with-filebeat-and-elastic-observability)
 
-**TODO**
-
-## Deployment and automation
-
-Azure supports a wide variety of deployment tools so you can use the one that suits with your habits and existing toolset.
-
 ## Conclusion
 **TODO**
-
