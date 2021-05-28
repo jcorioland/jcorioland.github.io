@@ -8,7 +8,7 @@ categories:
 - DevOps
 author: 'Julien Corioland'
 identifier: 'af64746b-9155-4fc0-b596-8a5dd7232422'
-image: /images/todo
+image: /images/building-cloud-native-platform-microsoft-azure/azure-kubernetes.png
 ---
 
 Over the past 8 months, my team and I have been engaged with a large ISV to help build and run a cloud native platform on top of Microsoft Azure and Kubernetes.
