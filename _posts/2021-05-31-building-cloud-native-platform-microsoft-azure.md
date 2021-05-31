@@ -11,11 +11,11 @@ identifier: 'af64746b-9155-4fc0-b596-8a5dd7232422'
 image: /images/building-cloud-native-platform-microsoft-azure/azure-kubernetes.png
 ---
 
-Over the past 8 months, my team and I have been engaged with a large ISV to help build and run a cloud native platform on top of Microsoft Azure and Kubernetes.
+Over the past years, I have been working customers to help build and run a cloud native platform on top of Microsoft Azure using Kubernetes.
 
 In this article, I will share some learnings and thoughts about different items that might be useful for you if you are starting on such a project, so you can get the best of Microsoft Azure to build cloud native platform for your company application developers and operators. I will not detail everything about the implementation itself, but stay at the architecture overview level of the discussion. That's being said, the following contains a lot of external links to specific topics, if you want to go deeper into each of them.
 
-Another way to see this post is: *A summary of 8 months of design, architecture, best practices and automation to build a cloud native platform on top of Azure Kubernetes Service*.
+Another way to see this post is: *A brain dump of architecture design and best practices to build a cloud native platform on top of Azure Kubernetes Service*.
 
 Let's start by understanding what is a cloud native platform. 
 
