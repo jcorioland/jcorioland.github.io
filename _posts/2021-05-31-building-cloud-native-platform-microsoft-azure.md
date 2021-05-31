@@ -37,7 +37,7 @@ No doubt that Kubernetes is the central piece of cloud-native platform these day
 
 The goal of this article is not to go into details about the application layer itself and how to deploy applications inside a Kubernetes cluster. There is already tons of articles and documentations about that. If you want to know more about how to get started with application development/deployment with Kubernetes on Azure, you can start from [there](https://docs.microsoft.com/azure/aks/concepts-clusters-workloads).
 
-But first thing first... let's discuss briefly about where it all start: the landing zones...
+In the next paragraphs, I will go over a lot of different topics that I think you should consider and discuss before going into Azure Kubernetes Service deployment. But first thing first... let's discuss briefly about where it all start: the landing zones...
 
 ## Landing Zone
 
