@@ -15,7 +15,7 @@ Over the past 8 months, my team and I have been engaged with a large ISV to help
 
 In this article, I will share some learnings and thoughts about different items that might be useful for you if you are starting on such a project, so you can get the best of Microsoft Azure to build cloud native platform for your company application developers and operators. I will not detail everything about the implementation itself, but stay at the architecture overview level of the discussion. That's being said, the following contains a lot of external links to specific topics, if you want to go deeper into each of them.
 
-Another way to see this post is: *A summary of 8 months of design, architecture and automation to build a cloud native platform on top of Azure*.
+Another way to see this post is: *A summary of 8 months of design, architecture, best practices and automation to build a cloud native platform on top of Azure Kubernetes Service*.
 
 Let's start by understanding what is a cloud native platform. 
 
@@ -218,4 +218,9 @@ From this, it's possible to use a components like [Filebeat](https://www.elastic
 You can read more about [Azure observability with Elastic on this page.](https://www.elastic.co/blog/monitoring-azure-infrastructure-with-filebeat-and-elastic-observability)
 
 ## Conclusion
-**TODO**
+
+I hope you enjoyed the reading and that this article has been helpful to understand all the elements to consider to run and operate a cloud native platform on top of [Azure Kubernetes Service](https://docs.microsoft.com/azure/aks/intro-kubernetes). Having a secured and enterprise grade deployment of AKS is only the begining of the adventure, and you will be able to benefit from all the inovation of the Kubernetes and Azure ecosystem.
+
+At [Build 2021](https://news.microsoft.com/build2021/), we announced a lot of new features to go a step further into building a cloud native platform for your applications developers and operators: using [Azure Arc](https://docs.microsoft.com/azure/azure-arc/overview) it will be possible to run services like Azure App Service, Azure Functions, Azure Logic Apps, Azure Event Grid and Azure API Management on top of any CNCF-conformant Kubernetes cluster, runnign on Azure, on-premises or on another public cloud. This is a new step in managing from one central all your clusters and propose a consistent cloud native platform to your users. You can read more about this new capabilities on [the Azure Blog](https://azure.microsoft.com/en-us/blog/build-cloudnative-applications-that-run-anywhere/) or also in [this excellent article from Tom](https://blog.tomkerkhove.be/2021/05/25/azure-application-services-with-azure-arc-leverages-azure-paas-anywhere/).
+
+Have fun with Kubernetes!
