@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Building a cloud native platform on top of Microsoft Azure and Kubernetes"
-date:   2021-05-01 10:00:00 +0200
+date:   2021-06-07 15:00:00 +0200
 categories: 
 - Microsoft Azure
 - Kubernetes
