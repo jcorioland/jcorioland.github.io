@@ -43,7 +43,7 @@ As mentionned in the introduction, I will go over a lot of different topics that
 
 ## Landing Zone
 
-This is important to have close collaboration between the teams responsible of the landing zone, the teams responsible for deploying and operating Kubernetes and applications teams. Indeed, a lot of architecture design decision that will be made on one side will have impact on the other. This is the reason why I decided to write a small paragraph about it before going into the Azure Kubernetes Service topics.
+This is important to have close collaboration between the teams responsible for the landing zone, the teams responsible for deploying and operating Kubernetes and applications teams. Indeed, a lot of architecture design decisions that are taken on one side have some impact on the others. This is the reason why I decided to write a small paragraph about it before going into the Azure Kubernetes Service topics.
 
 All begins with a landing zone: this is the basic infrastructure where the platform will be deployed. It includes components such as Azure subscription, network topology and connectivity (express route, firewall, vnet, route tables, dns configuration...), identities and role-based access control, business continuity and disaster recovery.
 
