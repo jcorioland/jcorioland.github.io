@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Learnings from a few years helping customers to build and run cloud native platform using Azure Kubernetes Service"
-date:   2021-06-07 15:00:00 +0200
+date:   2021-06-07 12:00:00 +0200
 categories: 
 - Microsoft Azure
 - Kubernetes
