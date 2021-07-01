@@ -184,7 +184,7 @@ Let's try to regenerate the graph again:
 
 ![Second Dependency Graph - with explicit dependency](/images/terraform-implicit-explicit-dependencies-between-resources/graph-with-depends-on.jpg)
 
-As you can see on the graph, now the dependency is explicit, and it's easy for Terraform to know that it must delete the association between NIC and ASG before deleting the virtual machine resources.
+As you can see on the graph, now the dependency is explicit, and it's easy for Terraform to know that it must delete the association between NIC and ASG after deleting the virtual machine resources.
 
 Bug fixed! :-)
 
